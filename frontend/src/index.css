@@ -1,9 +1,7 @@
 .themeClass {
   margin: 0;
   padding: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: #f953c6; /* fallback for old browsers */
+  background: #00022b; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
     #00022b,

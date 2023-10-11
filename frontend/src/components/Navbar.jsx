@@ -14,7 +14,7 @@ const Navbar = () => {
   }
   return (
     <Box h={20} py={4} px={10} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <img src='https://s3.amazonaws.com/cdn.codeblu.io/website/img_footer/footerlogo.svg' />
+      <img src='https://s3.amazonaws.com/cdn.codeblu.io/website/img_footer/footerlogo.svg' alt='logo' />
       <Button colorScheme='blue' onClick={openDrawer}><BiMenuAltRight size={24} /></Button>
       <DrawerComp refFromParent={refToChild} />
     </Box>
