@@ -67,7 +67,7 @@ const DrawerComp = ({ refFromParent }) => {
               <Link to="/contact" onClick={onClose}>
                 <Button variant={"link"}>Contact Us</Button>
               </Link>
-              <Link to="/" onClick={onClose}>
+              <Link to="/about" onClick={onClose}>
                 <Button variant={"link"}>About</Button>
               </Link>
             </VStack>
