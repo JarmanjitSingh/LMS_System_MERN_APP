@@ -19,9 +19,13 @@ import {RiDashboardFill} from "react-icons/ri"
 const DrawerComp = ({ refFromParent }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   const user = {
     role: "admin"
+  }
+
+  const logoutHandler = ()=>{
+    onClose()
   }
 
   return (
@@ -51,26 +55,25 @@ const DrawerComp = ({ refFromParent }) => {
               spacing={6}
               justifyContent={"center"}
             >
-              <Link to="/">
+              <Link to="/" onClick={onClose}>
                 <Button variant={"link"}>Home</Button>
               </Link>
-              <Link to="/">
+              <Link to="/courses" onClick={onClose}>
                 <Button variant={"link"}>Courses</Button>
               </Link>
-              <Link to="/">
+              <Link to="/" onClick={onClose}>
                 <Button variant={"link"}>Request Course</Button>
               </Link>
-              <Link to="/">
+              <Link to="/" onClick={onClose}>
                 <Button variant={"link"}>Contact Us</Button>
               </Link>
-              <Link to="/">
+              <Link to="/" onClick={onClose}>
                 <Button variant={"link"}>About</Button>
               </Link>
             </VStack>
           </DrawerBody>
 
           <DrawerFooter
-            border={"1px solid"}
             display={"flex"}
             justifyContent={"space-evenly"}
           >
@@ -78,18 +81,18 @@ const DrawerComp = ({ refFromParent }) => {
               <>
                 <VStack>
                   <HStack>
-                    <Button variant={"outline"} colorScheme="white">
+                    <Button variant={"outline"} colorScheme="white" onClick={logoutHandler}>
                       Logout
                       <CgLogOut style={{marginLeft: "5px"}}  />
                     </Button>
-                    <Link to={"/profile"}>
+                    <Link to={"/profile"} onClick={onClose}>
                       <Button colorScheme="blue">Profile
                       <CgProfile style={{marginLeft: "5px"}} />
                       </Button>
                     </Link>
                   </HStack>
                   {
-                    user && user.role === "admin" &&  <Link to={"/admin/dashboard"}>
+                    user && user.role === "admin" &&  <Link to={"/admin/dashboard"} onClick={onClose}>
                     <Button>
                       Dashboard
                       <RiDashboardFill style={{marginLeft: "5px"}}  />
@@ -101,13 +104,13 @@ const DrawerComp = ({ refFromParent }) => {
               </>
             ) : (
               <>
-                <Link to={"/register"}>
+                <Link to={"/register"} onClick={onClose}>
                   <Button variant={"outline"} colorScheme="white">
                     Sign Up
                   </Button>
                 </Link>
                 <p>Or</p>
-                <Link to={"/login"}>
+                <Link to={"/login"} onClick={onClose}>
                   <Button colorScheme="blue">Login</Button>
                 </Link>
               </>
