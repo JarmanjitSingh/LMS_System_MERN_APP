@@ -61,10 +61,10 @@ const DrawerComp = ({ refFromParent }) => {
               <Link to="/courses" onClick={onClose}>
                 <Button variant={"link"}>Courses</Button>
               </Link>
-              <Link to="/" onClick={onClose}>
+              <Link to="/request" onClick={onClose}>
                 <Button variant={"link"}>Request Course</Button>
               </Link>
-              <Link to="/" onClick={onClose}>
+              <Link to="/contact" onClick={onClose}>
                 <Button variant={"link"}>Contact Us</Button>
               </Link>
               <Link to="/" onClick={onClose}>

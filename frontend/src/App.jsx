@@ -8,6 +8,8 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import ForgetPassword from "./pages/Auth/ForgetPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import Contact from "./pages/Contact/Contact";
+import RequestCourse from "./pages/RequestCourse/RequestCourse";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/request" element={<RequestCourse />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgetpassword" element={<ForgetPassword />} />
