@@ -6,6 +6,8 @@ import CoursesPage from "./pages/Courses/CoursesPage";
 import Footer from "./components/Footer";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import ForgetPassword from "./pages/Auth/ForgetPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/resetpassword/:token" element={<ResetPassword />} />
         </Routes>
         <Footer />
       </Router>
