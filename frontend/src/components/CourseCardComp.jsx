@@ -77,7 +77,7 @@ const CourseCardComp = ({
       </HStack>
 
       <Stack direction={["column", "row"]} alignItems={"center"} justifyContent={'space-between'}>
-        <Link to={`course/${id}`}>
+        <Link to={`/course/${id}`}>
           <Button colorScheme="blue">Watch Now <BsCollectionPlayFill style={{marginLeft: '10px'}} /></Button>
         </Link>
         <Button

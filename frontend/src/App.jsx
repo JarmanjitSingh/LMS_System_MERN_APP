@@ -15,6 +15,7 @@ import Subscribe from "./pages/Payments/Subscribe";
 import NotFound from "./components/NotFound";
 import PaymentSuccess from "./pages/Payments/PaymentSuccess";
 import PaymentFail from "./pages/Payments/PaymentFail";
+import CourseDetailPage from "./pages/CourseDetail/CourseDetailPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/course/:id" element={<CourseDetailPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/request" element={<RequestCourse />} />
           <Route path="/about" element={<About />} />
