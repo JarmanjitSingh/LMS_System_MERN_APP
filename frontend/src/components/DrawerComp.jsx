@@ -19,7 +19,7 @@ import {RiDashboardFill} from "react-icons/ri"
 const DrawerComp = ({ refFromParent }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const user = {
     role: "admin"
   }
