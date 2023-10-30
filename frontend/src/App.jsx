@@ -20,6 +20,10 @@ import Profile from "./pages/Profile/Profile";
 import { Toaster } from 'react-hot-toast';
 import ChangePassword from "./pages/Profile/ChangePassword";
 import UpdateProfile from "./pages/Profile/UpdateProfile";
+import Dashboard from "./pages/Admin/Dashboard/Dashboard";
+import CreateCourse from "./pages/Admin/CreateCourse/CreateCourse";
+import AdminCourses from "./pages/Admin/AdminCourses/AdminCourses";
+import Users from "./pages/Admin/Users/Users";
 
 function App() {
   return (
@@ -47,6 +51,15 @@ function App() {
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/paymentfail" element={<PaymentFail />} />
           <Route path="*" element={<NotFound />} />
+
+
+          {/* Admin routes */}
+
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/createcourse" element={<CreateCourse />} />
+          <Route path="/admin/courses" element={<AdminCourses />} />
+          <Route path="/admin/users" element={<Users />} />
+
 
         </Routes>
         <Footer />
