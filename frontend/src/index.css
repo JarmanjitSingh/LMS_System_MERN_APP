@@ -22,3 +22,7 @@
 .course:hover{
   transform: translateY(-10px);
 }
+
+select > option{
+color: #00022b;
+}
