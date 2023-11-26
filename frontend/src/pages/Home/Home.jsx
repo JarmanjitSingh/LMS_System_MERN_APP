@@ -8,25 +8,25 @@ const Home = () => {
     <>
       <Container
         maxW={"container.xl"}
-        h={"90vh"}
+        minH={"95vh"}
         display={"flex"}
         flexDirection={["column", "column", "row", "row"]}
       >
         <Box
-          borderRight={"1px solid"}
-          borderColor={["red", "blue.400"]}
+          borderRight={["none", "none", "none", "2px solid #2b6cb0"]}
           h={"full"}
           w={"full"}
           display={"flex"}
           flexDirection={"column"}
           alignItems={["center", "self-start"]}
           justifyContent={"center"}
+          px={[10, 10, 10, 0]}
         >
           <Box py={10} w={"full"}>
-            <Heading size={"3xl"} letterSpacing={"4px"}>
+            <Heading size={["xl", "3xl"]} letterSpacing={"4px"}>
               Empower <span style={{ color: "#00a3ff" }}>Your</span>
             </Heading>
-            <Heading size={"3xl"} letterSpacing={"4px"} mt={4}>
+            <Heading size={["xl", "3xl"]} letterSpacing={"4px"} mt={4}>
               Learning Journey
             </Heading>
           </Box>
@@ -59,11 +59,13 @@ const Home = () => {
           alignItems={"center"}
           justifyContent={"space-evenly"}
         >
-          <Heading>Get Your Course Right Now</Heading>
-          <Lottie
-            animationData={animationData}
-            style={{ height: "300px", width: "300px", transform: "scale(1.5)" }}
-          />
+          <Heading textAlign={"center"}>Get Your Course Right Now</Heading>
+          <Box h={["200px", "300px"]} w={["200px", "300px"]}>
+            <Lottie
+              animationData={animationData}
+              style={{ height: "100%", width: "100%", transform: "scale(1.5)" }}
+            />
+          </Box>
 
           <Text w={"80%"} fontSize={"0.8rem"} textAlign={"justify"}>
             We're passionate about helping you achieve your learning goals.
@@ -72,12 +74,11 @@ const Home = () => {
             for everyone.
           </Text>
 
-          <Button colorScheme="blue" width={"50%"}>
+          <Button colorScheme="blue" width={"50%"} mt={12}>
             Get Started
           </Button>
         </Box>
       </Container>
-
     </>
   );
 };

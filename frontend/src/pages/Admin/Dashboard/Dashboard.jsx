@@ -26,7 +26,7 @@ const Dashboard = () => {
       }}
     >
       <Stack
-        direction={["column", "row"]}
+        direction={["column","column","row", "row"]}
         alignItems={"start"}
         justifyContent={"center"}
         w={"full"}
@@ -34,7 +34,7 @@ const Dashboard = () => {
         gap={16}
       >
         <VStack
-          w={["full", "20%"]}
+          w={["full","full","20%", "20%"]}
           gap={4}
           bg={"blue.800"}
           borderRadius={"10px"}
@@ -43,7 +43,7 @@ const Dashboard = () => {
           <Sidebar />
         </VStack>
 
-        <Box w={["full","70%"]} minH={"90vh"} py={4}>
+        <Box w={["full","full","70%","70%"]} minH={"90vh"} py={4}>
           <Text textAlign={"center"} opacity={0.5}>
             Last change was on {String(new Date()).split("G")[0]}
           </Text>
@@ -91,8 +91,8 @@ const Dashboard = () => {
             <LineChart />
           </Box>
 
-          <Grid templateColumns={["1fr", "2fr 1fr"]} m={[0, 6]} mt={[6, 0]} gap={4}>
-            <Box p={4} bg={"blue.900"} borderRadius={"lg"}>
+          <Stack  direction={['column', 'column','row','row']} w={'full'} m={[0, 'auto']} p={[0, 6]} mt={[6, 0]} gap={4}>
+            <Box w={['100%','100%','60%','60%',]} p={4} bg={"blue.900"} borderRadius={"lg"}>
               <Heading textAlign={["center", "left"]} size={"md"} my={8}>
                 Progress Bar
               </Heading>
@@ -106,7 +106,7 @@ const Dashboard = () => {
               </Box>
             </Box>
 
-            <Box bg={"blue.900"} p={4} borderRadius={"lg"} >
+            <Box w={['100%', '100%', '40%', '40%']} bg={"blue.900"} p={4} borderRadius={"lg"} >
               <Heading textAlign={"center"} size={"md"} my={4}>
                 Users
               </Heading>
@@ -114,7 +114,7 @@ const Dashboard = () => {
               {/* donut graph */}
               <DoughnutChart />
             </Box>
-          </Grid>
+          </Stack>
         </Box>
       </Stack>
     </Container>

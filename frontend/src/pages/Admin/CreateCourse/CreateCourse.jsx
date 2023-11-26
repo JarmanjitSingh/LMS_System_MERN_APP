@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import {
+  Box,
   Button,
   Container,
   FormControl,
@@ -48,7 +49,6 @@ const CreateCourse = () => {
   return (
     <Container
       maxW={"container.2xl"}
-     
       minH={"100vh"}
       p={4}
       css={{
@@ -56,7 +56,7 @@ const CreateCourse = () => {
       }}
     >
       <Stack
-        direction={["column", "row"]}
+        direction={["column","column","row", "row"]}
         alignItems={"start"}
         justifyContent={"center"}
         w={"full"}
@@ -64,7 +64,7 @@ const CreateCourse = () => {
         gap={16}
       >
         <VStack
-          w={"20%"}
+          w={["full","full","20%", "20%"]}
           gap={4}
           bg={"blue.800"}
           borderRadius={"10px"}
@@ -74,12 +74,13 @@ const CreateCourse = () => {
         </VStack>
 
         <VStack
-          w={"70%"}
+         w={["full","full","70%","70%"]}
           minH={"90vh"}
         
 
         >
-          <form style={{ width: "60%", textAlign: "center" }}>
+          <Box w={['100%', '60%']}>
+          <form style={{ width: "100%", textAlign: "center" }}>
             <Heading textTransform={"uppercase"}>Create Course</Heading>
             <FormControl my={4}>
               <FormLabel htmlFor="title">Title</FormLabel>
@@ -162,6 +163,7 @@ const CreateCourse = () => {
             <Button colorScheme="blue" type="submit" w={'full'} my={4}>Create</Button>
             
           </form>
+          </Box>
         </VStack>
       </Stack>
     </Container>

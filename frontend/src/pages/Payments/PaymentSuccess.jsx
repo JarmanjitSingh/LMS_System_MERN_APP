@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const PaymentSuccess = () => {
   return (
     <Container
-     h={"90vh"} p={16}>
+     minH={"90vh"} p={16}>
       <Heading textAlign={"center"} mb={8}>
         You Have Pro Pack
       </Heading>

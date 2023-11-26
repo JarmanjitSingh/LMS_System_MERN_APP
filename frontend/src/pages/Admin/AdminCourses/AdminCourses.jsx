@@ -59,7 +59,7 @@ const AdminCourses = () => {
       }}
     >
       <Stack
-        direction={["column", "row"]}
+       direction={["column","column","row", "row"]}
         alignItems={"start"}
         justifyContent={"center"}
         w={"full"}
@@ -67,7 +67,7 @@ const AdminCourses = () => {
         gap={16}
       >
         <VStack
-          w={"20%"}
+            w={["full","full","20%", "20%"]}
           gap={4}
           bg={"blue.800"}
           borderRadius={"10px"}
@@ -76,7 +76,7 @@ const AdminCourses = () => {
           <Sidebar />
         </VStack>
 
-        <VStack w={"70%"} minH={"90vh"} overflowX={"auto"}>
+        <VStack w={["full","full","70%","70%"]} minH={"90vh"} overflowX={"auto"}>
           <Heading textTransform={"uppercase"}>All Users</Heading>
 
           <TableContainer w={["100vw", "full"]}>

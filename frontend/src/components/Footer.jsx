@@ -1,4 +1,4 @@
-import { HStack, Heading, Stack, Text, VStack } from "@chakra-ui/react";
+import { Grid, HStack, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -7,22 +7,21 @@ const Footer = () => {
     <>
       <Stack
         bg={"blue.900"}
-        h={"300px"}
+        minH={"300px"}
         alignItems={"center"}
         justifyContent={"space-between"}
         py={4}
       >
-        <HStack
-          alignItems={"center"}
-          justifyContent={"space-evenly"}
+        <Grid
+         templateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr 1fr', '1fr 1fr 1fr 1fr']}
+        gap={4}
           h={"full"}
           w={"full"}
         >
           <VStack
-            fontSize={"xl"}
+            fontSize={["md", "xl", "xl", "xl"]}
             h={"full"}
-            w={"20%"}
-            alignItems={"flex-start"}
+            alignItems={'center'}
             justifyContent={"space-evenly"}
           >
             <Heading>About</Heading>
@@ -31,10 +30,9 @@ const Footer = () => {
             <Link to={"/"}>FAQ</Link>
           </VStack>
           <VStack
-            fontSize={"xl"}
+             fontSize={["md", "xl", "xl", "xl"]}
             h={"full"}
-            w={"20%"}
-            alignItems={"flex-start"}
+            alignItems={"center"}
             justifyContent={"space-evenly"}
           >
             <Heading>Quick Links</Heading>
@@ -43,10 +41,9 @@ const Footer = () => {
             <Link to={"/"}>Course Dashboard</Link>
           </VStack>{" "}
           <VStack
-            fontSize={"xl"}
+             fontSize={["md", "xl", "xl", "xl"]}
             h={"full"}
-            w={"20%"}
-            alignItems={"flex-start"}
+            alignItems={"center"}
             justifyContent={"space-evenly"}
           >
             <Heading>Social Links</Heading>
@@ -55,10 +52,9 @@ const Footer = () => {
             <Link to={"/"}>Instagram</Link>
           </VStack>{" "}
           <VStack
-            fontSize={"xl"}
+            fontSize={["md", "xl", "xl", "xl"]}
             h={"full"}
-            w={"20%"}
-            alignItems={"flex-start"}
+            alignItems={"center"}
             justifyContent={"space-evenly"}
           >
             <Heading>About</Heading>
@@ -66,9 +62,9 @@ const Footer = () => {
             <Link to={"/"}>Privacy Policy</Link>
             <Link to={"/"}>FAQ</Link>
           </VStack>
-        </HStack>
+        </Grid>
 
-        <Text>Copyright &copy; 2023 codeblu | All Rights Reserved</Text>
+        <Text textAlign={'center'}>Copyright &copy; 2023 codeblu | All Rights Reserved</Text>
       </Stack>
     </>
   );

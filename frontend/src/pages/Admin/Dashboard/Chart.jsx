@@ -82,8 +82,12 @@ export const DoughnutChart = () => {
         ],
       };
 
+      const options = {
+        responsive: true,
+       
+      };
    
-      return <Doughnut data={data}/>
+      return <Doughnut data={data} options={options}/>
       
 };
 

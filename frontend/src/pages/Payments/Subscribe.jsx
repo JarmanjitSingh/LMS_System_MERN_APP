@@ -10,7 +10,7 @@ import React from "react";
 
 const Subscribe = () => {
   return (
-    <Container h={"90vh"} p={16}>
+    <Container minH={"90vh"} p={16}>
       <Heading my={8} textAlign={"center"} letterSpacing={'2px'}> 
         Subscription
       </Heading>

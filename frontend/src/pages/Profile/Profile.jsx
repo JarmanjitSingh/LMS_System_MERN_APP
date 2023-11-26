@@ -62,7 +62,7 @@ const Profile = () => {
     <>
       <Container maxW={"6xl"} border={"1px solid"} minH={"80vh"} p={4}>
         <Stack
-          direction={["column", "row"]}
+          direction={["column","column","row", "row"]}
           alignItems={"center"}
           justifyContent={"center"}
           w={"full"}
@@ -70,7 +70,7 @@ const Profile = () => {
           gap={16}
         >
           <VStack
-            w={"25%"}
+            w={["100%", "100%", "25%", "25%"]}
             gap={4}
             bg={"blue.800"}
             borderRadius={"10px"}
@@ -139,7 +139,7 @@ const Profile = () => {
             </Button>
           </VStack>
 
-          <VStack w={"60%"} minH={"70vh"}>
+          <VStack w={["100%", "100%", "60%", "60%"]} minH={"70vh"}>
             <VStack>
               <Avatar size={"2xl"} />
               <Button variant={"link"} colorScheme="blue" onClick={onOpen}>
@@ -147,7 +147,7 @@ const Profile = () => {
               </Button>
             </VStack>
 
-            <Grid templateColumns={"1fr 1fr"} w={"full"} gap={8} mt={4}>
+            <Grid templateColumns={["1fr", "1fr 1fr"]} w={"full"} gap={8} mt={4}>
               <HStack>
                 <Text fontWeight={"bold"} color={"gray.400"}>
                   Name :{" "}
@@ -175,7 +175,7 @@ const Profile = () => {
             </Grid>
 
             {user.role !== "admin" && (
-              <HStack w={"full"} alignItems={"center"} justifyContent={"end"}>
+              <HStack w={"full"} alignItems={"center"} justifyContent={["start", "end"]}>
                 <Text fontWeight={"bold"}>Subscription</Text>
                 {user.subscription.status === "active" ? (
                   <Button>Cancel Subscription</Button>

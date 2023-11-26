@@ -13,7 +13,7 @@ const About = () => {
           />
           <Heading>?</Heading>
         </HStack>
-        <Text fontFamily={"body"} fontSize={'xl'} mt={8} color={'gray.400'} alignContent={'center'}>
+        <Text fontFamily={"body"} fontSize={'xl'} mt={8} color={'gray.400'} alignContent={'center'} textAlign={['center', 'left']}>
           Are you ready to take your programming skills to the next level? Look
           no further than Codeblu, the premier programming community dedicated
           to helping new programmers achieve their goals and reach their full
