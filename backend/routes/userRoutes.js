@@ -1,5 +1,6 @@
 import express from "express";
-import { login, logout, register } from "../controllers/userController.js";
+import { getMyProfile, login, logout, register } from "../controllers/userController.js";
+import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -7,14 +8,13 @@ const router = express.Router();
 router.route("/register").post(register)
 
 //to login
-
 router.route("/login").post(login)
 
 //logout
-router.route("/logout").get(logout)
-
+router.route("/logout").get(isAuthenticated, logout)
 
 //get my profile
+router.route("/me").get(isAuthenticated, getMyProfile)
 
 //changePassword
 

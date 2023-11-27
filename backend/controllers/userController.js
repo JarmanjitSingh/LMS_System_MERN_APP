@@ -63,3 +63,13 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
         message: "Logged out successfully."
     })
   });
+
+
+  export const getMyProfile = catchAsyncErrors(async(req, res, next)=>{
+
+    res.status(200).json({
+        success: true,
+        user: req.user
+    })
+    console.log('ended')
+  })
