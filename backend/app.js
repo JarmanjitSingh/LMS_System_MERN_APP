@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import {config} from "dotenv";
 
 config({
@@ -6,6 +6,12 @@ config({
 })
 const app = express();
 
+
+//using middlewares
+app.use(express.json());
+app.use(urlencoded({
+    extended: true
+})) //these two middleware are used to access data from req.body
 
 //Importing and using routes
 import courseRoute from "./routes/courseRoutes.js"
