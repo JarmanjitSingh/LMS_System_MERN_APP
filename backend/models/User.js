@@ -55,6 +55,8 @@ const schema = new mongoose.Schema({
   ResetPasswordExpire: String
 });
 
+
+//we are creating a all user methods below
 schema.methods.getJWTToken = function(){
   return jwt.sign({_id: this._id}, process.env.JWT_SECRET, {
     expiresIn: '15d'
