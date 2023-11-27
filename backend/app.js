@@ -15,11 +15,14 @@ app.use(urlencoded({
 
 //Importing and using routes
 import courseRoute from "./routes/courseRoutes.js"
-import ErrorMiddleware from "./middlewares/Error.js";
+import userRoute from "./routes/userRoutes.js"
 
-app.use("/api/v1", courseRoute)
+app.use("/api/v1", courseRoute);
+app.use("/api/v1", userRoute)
 
 //using error middleware 
+import ErrorMiddleware from "./middlewares/Error.js";
+
 app.use(ErrorMiddleware)
 
 
