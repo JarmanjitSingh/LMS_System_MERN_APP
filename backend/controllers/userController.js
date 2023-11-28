@@ -2,6 +2,8 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import { User } from "../models/User.js";
 import { sendToken } from "../utils/sendToken.js";
+import { sendEmail } from "../utils/sendEmail.js";
+import crypto from "crypto";
 
 export const register = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -16,7 +18,6 @@ export const register = catchAsyncErrors(async (req, res, next) => {
   if (isUserExist) return next(new ErrorHandler("User already exists", 409));
 
   //upload file on cloudinary
-
 
   const user = await User.create({
     name,
@@ -84,7 +85,7 @@ export const changePassword = catchAsyncErrors(async (req, res, next) => {
 
   user.password = newPassword;
 
-  await user.save()
+  await user.save();
 
   res.status(200).json({
     success: true,
@@ -100,7 +101,7 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
   if (name) user.name = name;
   if (email) user.email = email;
 
-  await user.save()
+  await user.save();
 
   res.status(200).json({
     success: true,
@@ -108,11 +109,65 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 export const updateProfilePicture = catchAsyncErrors(async (req, res, next) => {
-   
-    res.status(200).json({
-      success: true,
-      message: "Profile picture updated successfully",
-    });
+  res.status(200).json({
+    success: true,
+    message: "Profile picture updated successfully",
   });
+});
+
+export const forgetPassword = catchAsyncErrors(async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) return next(new ErrorHandler("User not found", 400));
+
+  const resetToken = await user.getResetToken();
+
+  await user.save()
+
+  //send token via email
+  const url = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+
+  const message = `Click on the link to reset your password. ${url}. If you have not requested then please ignore`;
+
+  await sendEmail(user.email, "CodeBlu Reset Password", message);
+
+  res.status(200).json({
+    success: true,
+    message:
+      "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.",
+  });
+});
+
+export const resetPassword = catchAsyncErrors(async (req, res, next) => {
+  
+  const { token } = req.params;
+
+  const resetPasswordToken = crypto 
+    .createHash("sha256")
+    .update(token)
+    .digest("hex"); 
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: {
+        $gt: Date.now()
+      }
+    })
+
+    if(!user) return next(new ErrorHandler("Token is invalid or has been expired", 403))
+
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save()
+
+
+  res.status(200).json({
+    success: true,
+    message: "Password changed successfully",
+  });
+});
