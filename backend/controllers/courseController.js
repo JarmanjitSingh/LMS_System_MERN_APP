@@ -65,28 +65,92 @@ export const addLecture = catchAsyncErrors(async (req, res, next) => {
   const {id} = req.params
   const {title, description} = req.body;
 
-  //const file = req.file
-
   const course = await Course.findById(id);
   if (!course) return next(new ErrorHandler("Invalid course id", 404));
 
   //upload file on cloudinary
 
+  const file = req.file; //we can get a file as a blob here so then we can convert it as a datauri
+ 
+   const fileUri = getDataUri(file)
+ 
+   const myCloud = await cloudinary.v2.uploader.upload(fileUri.content, {
+    resource_type: "video"
+   })
+
   course.lectures.push({
     title,
     description,
     video: {
-      public_id: "url",
-      url: "url",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
-  numOfVideos = course.lectures.length;
+  course.numOfVideos = course.lectures.length;
 
   await course.save();
 
   res.status(200).json({
     success: true,
     message: "Lecture added successfully",
+  });
+});
+
+
+export const deleteCourse = catchAsyncErrors(async (req, res, next) => {
+  const {id} = req.params;
+
+  const course = await Course.findById(id);
+  if(!course) return next(new Error('Course not found', 404));
+
+  await cloudinary.v2.uploader.destroy(course.poster.public_id);
+
+  for (let i = 0; i < course.lectures.length; i++) {
+    const singleLecture = course.lectures[i];
+
+    await cloudinary.v2.uploader.destroy(singleLecture.video.public_id, {
+      resource_type: "video"
+    })
+  }
+
+  await course.deleteOne();
+
+  res.status(200).json({
+    success: true,
+    message: "Course deleted successfully.",
+  });
+});
+
+
+export const deleteLecture = catchAsyncErrors(async (req, res, next) => {
+  const {courseId, lectureId} = req.query;
+
+  const course = await Course.findById(courseId);
+  if(!course) return next(new Error('Course not found', 404));
+
+  const lecture = course.lectures.find(item => {
+    if(item._id.toString() === lectureId.toString()) return item
+  })
+
+  if(!lecture) return next(new ErrorHandler("Lecture not found", 404));
+  
+  await cloudinary.v2.uploader.destroy(lecture.video.public_id, {
+    resource_type: 'video'
+  });
+
+  course.lectures = course.lectures.filter(item =>{
+    if(item._id.toString() !== lectureId.toString()) return item
+  })
+
+  course.numOfVideos = course.lectures.length;
+
+  await course.save();
+  
+
+  
+  res.status(200).json({
+    success: true,
+    message: "Lecture deleted successfully.",
   });
 });
