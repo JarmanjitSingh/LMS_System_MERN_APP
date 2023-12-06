@@ -18,11 +18,11 @@ app.use(urlencoded({
 //Importing and using routes
 import courseRoute from "./routes/courseRoutes.js"
 import userRoute from "./routes/userRoutes.js"
+import paymentRoute from "./routes/paymentsRoutes.js"
 
 app.use("/api/v1", courseRoute);
-app.use("/api/v1", userRoute)
-
-
+app.use("/api/v1", userRoute);
+app.use("/api/v1", paymentRoute);
 
 
 //using error middleware 

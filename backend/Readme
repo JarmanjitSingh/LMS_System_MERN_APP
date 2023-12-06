@@ -1,4 +1,4 @@
-## Upload files using cloudinary and multer;
+# Upload files using cloudinary and multer;
 
 1. create a multer middleware and pass the multer function in the routes just before the controller function.
 2. setup a cloudinary config in the server.js
@@ -14,3 +14,11 @@ you will getting the output from the req.file is like this and you will pass thi
   buffer: <Buffer ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff db 00 43 00 06 04 05 06 05 04 06 06 05 06 07 07 06 08 0a 10 0a 0a 09 09 0a 14 0e 0f 0c ... 537110 more bytes>,
   size: 537160
 }
+
+# Razorpay Integration 
+
+1. firstly you can go to the Razorpay site and login then get a api key and secret from accounts and settings and 
+then create a plan in subscriptions tab in plans 
+2. secondly you can go to the razorpay dev website and go to the developer tools > server side sdks > know more > Node.js > Build integration 
+3. create a instance in the server.js > make a payment route > payment controller
+4. now at the razorpay dev go the subscription tab  > subscription apis > create a subscription. and you will see here plan id and total cound is mandatory fields.
