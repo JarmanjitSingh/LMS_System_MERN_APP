@@ -9,7 +9,7 @@ export const buySubscription = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (user.role === "admin")
-    return new ErrorHandler("Admin can't buy a subscription", 400);
+    return next(new ErrorHandler("Admin can't buy a subscription", 400));
 
   const plan_id = process.env.PLAN_ID || "plan_N98UtH6D7VAOaI";
 
