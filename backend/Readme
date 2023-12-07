@@ -22,3 +22,20 @@ then create a plan in subscriptions tab in plans
 2. secondly you can go to the razorpay dev website and go to the developer tools > server side sdks > know more > Node.js > Build integration 
 3. create a instance in the server.js > make a payment route > payment controller
 4. now at the razorpay dev go the subscription tab  > subscription apis > create a subscription. and you will see here plan id and total cound is mandatory fields.
+
+5. after hiting the subscribe api then we can hit the payment verification api 
+so in razor pay there will be two methods handler function and callback url. you can check it out by following :-
+razorpay dev website > devtools > sample apps > js docs > integration steps > build integration and here you can check handler function or callback url
+
+6. and here we are hiting our paymentverification api by callback url. 
+
+Note: if we use handler function then it will give these three
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id); //order ki jgha hame subscription_id milegi
+        alert(response.razorpay_signature);
+
+        but we are using the callback url so in this urls controller we can get these from the req.body vo razorpay khud hi bhejga
+
+7. verify these above three. webpage in point no. 5 gives how to verify signature so you can checkout from that 
+8. we are creating payments model this will help for refund we can check from created now if it will withing 7 days then we will refund.
+in refund process we need a razorpay key so we can make a small functino and route for it
