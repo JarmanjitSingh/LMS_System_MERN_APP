@@ -6,7 +6,19 @@ import ErrorHandler from "../utils/errorHandler.js";
 import cloudinary from "cloudinary";
 
 export const getAllCourses = catchAsyncErrors(async (req, res, next) => {
-  const allCourses = await Course.find().select("-lectures"); //we dont need lectures array when we are fetching courses lectures for the subscription users only
+  const keyword = req.query.keyword || ""
+  const category = req.query.category || ""
+
+  const allCourses = await Course.find({
+    title: {
+      $regex: keyword,
+      $options: "i" //for case insensitive
+    },
+    category: {
+      $regex: category,
+      $options: "i"
+    }
+  }).select("-lectures"); //we dont need lectures array when we are fetching courses lectures for the subscription users only
 
   res.status(200).json({
     success: true,
