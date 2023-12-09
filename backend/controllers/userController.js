@@ -7,6 +7,7 @@ import { sendEmail } from "../utils/sendEmail.js";
 import crypto from "crypto";
 import cloudinary from "cloudinary";
 import getDataUri from "../utils/dataUri.js";
+import { Stats } from "../models/Stats.js";
 
 export const register = catchAsyncErrors(async (req, res, next) => {
   const file = req.file;
@@ -265,7 +266,7 @@ export const updateUserRole = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "Role updated"
+    message: "Role updated",
   });
 });
 
@@ -275,32 +276,48 @@ export const deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(id);
   if (!user) return next(new ErrorHandler("User not found", 404));
 
- await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+  await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
- //cancel subscription
+  //cancel subscription
 
   await user.deleteOne();
 
   res.status(200).json({
     success: true,
-    message: "User deleted successfully"
+    message: "User deleted successfully",
   });
 });
 
 export const deleteMyProfile = catchAsyncErrors(async (req, res, next) => {
-
   const user = await User.findById(req.user._id);
 
- await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+  await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
- //cancel subscription
+  //cancel subscription
 
   await user.deleteOne();
 
-  res.status(200).cookie('token', null, {
-    expires: new Date(Date.now())
-  }).json({
-    success: true,
-    message: "User deleted successfully"
-  });
+  res
+    .status(200)
+    .cookie("token", null, {
+      expires: new Date(Date.now()),
+    })
+    .json({
+      success: true,
+      message: "User deleted successfully",
+    });
+});
+
+
+//creating a watcher for stats because of realtime data when ever change in the user model then callback function runs 
+User.watch().on("change", async () => {
+  const stat = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
+
+  const subscribedUsers = await User.find({ "subscription.status": "active" });
+
+  stat[0].users = await User.countDocuments();
+  stat[0].subscriptions = subscribedUsers.length;
+  stat[0].createdAt = new Date(Date.now());
+
+  await stat[0].save();
 });

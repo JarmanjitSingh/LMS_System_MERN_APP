@@ -1,5 +1,6 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { Course } from "../models/Course.js";
+import { Stats } from "../models/Stats.js";
 import getDataUri from "../utils/dataUri.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import cloudinary from "cloudinary";
@@ -154,3 +155,21 @@ export const deleteLecture = catchAsyncErrors(async (req, res, next) => {
     message: "Lecture deleted successfully.",
   });
 });
+
+Course.watch().on("change", async()=>{
+  const stat = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
+
+  const allCourses = await Course.find({});
+
+  let totalViews = 0;
+
+  for (let i = 0; i < allCourses.length; i++) {
+    totalViews += allCourses[i].views;
+    
+  }
+
+  stat[0].views = totalViews;
+  stat[0].createdAt = new Date(Date.now())
+
+  await stat[0].save()
+})

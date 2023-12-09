@@ -39,3 +39,13 @@ Note: if we use handler function then it will give these three
 7. verify these above three. webpage in point no. 5 gives how to verify signature so you can checkout from that 
 8. we are creating payments model this will help for refund we can check from created now if it will withing 7 days then we will refund.
 in refund process we need a razorpay key so we can make a small functino and route for it
+
+
+# DashBoard Stats api 
+
+1. create a model for saving stats
+2. set a cronjob in server.js who will runs every months first day on 00:00 am and create a empty document in db for that month;
+3. Now add watcher in the user controller it will change the stats in the db when ever change in the user model and it will update the real time users count, subscribers count in the db for that particular month
+4. for real time view count create a watcher in the course controller.
+5. make a controller for dashboard stats api in the others controller.
+
