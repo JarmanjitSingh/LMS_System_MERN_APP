@@ -62,6 +62,9 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
     .status(200)
     .cookie("token", null, {
       expires: new Date(Date.now()),
+      secure: true,
+      sameSite: "none",
+      httpOnly: true,
     })
     .json({
       success: true,
@@ -308,8 +311,7 @@ export const deleteMyProfile = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-
-//creating a watcher for stats because of realtime data when ever change in the user model then callback function runs 
+//creating a watcher for stats because of realtime data when ever change in the user model then callback function runs
 User.watch().on("change", async () => {
   const stat = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
 

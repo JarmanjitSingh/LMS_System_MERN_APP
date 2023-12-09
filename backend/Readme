@@ -1,3 +1,6 @@
+#api link: https://codeblu-backend.onrender.com/
+#api with prefix: https://codeblu-backend.onrender.com/api/v1/courses
+
 # Upload files using cloudinary and multer;
 
 1. create a multer middleware and pass the multer function in the routes just before the controller function.
