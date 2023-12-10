@@ -1,5 +1,5 @@
 import {
-    Box,
+  Box,
   Button,
   Container,
   FormControl,
@@ -12,22 +12,34 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { login } from "../../reduxToolkit/api_functions/user";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    login(email, password, dispatch);
+  };
   return (
     <>
       <Container h={"95vh"}>
         <VStack h={"full"} justifyContent={"center"} w={"full"} spacing={16}>
-          <Stack direction={['column', 'row']} alignItems={"center"} justifyContent={"center"}>
+          <Stack
+            direction={["column", "row"]}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
             <Heading>Welcome to the </Heading>
             <img
               src="https://s3.amazonaws.com/cdn.codeblu.io/website/img_footer/footerlogo.svg"
               alt="codeblu logo"
             />
           </Stack>
-          <form style={{ width: "100%" }}>
+          <form onSubmit={submitHandler} style={{ width: "100%" }}>
             <FormControl my={4}>
               <FormLabel htmlFor="email">Email Address</FormLabel>
               <Input
@@ -53,14 +65,23 @@ const Login = () => {
             </FormControl>
 
             <Box>
-                <Link to={'/forgetpassword'}>
-                    <Button variant={'link'}>Forget Password?</Button>
-                </Link>
+              <Link to={"/forgetpassword"}>
+                <Button variant={"link"}>Forget Password?</Button>
+              </Link>
             </Box>
 
-            <Button colorScheme="blue" type="submit" w={'full'} my={4}>Login</Button>
+            <Button colorScheme="blue" type="submit" w={"full"} my={4}>
+              Login
+            </Button>
 
-            <Box>New User? <Link to={'/register'}><Button variant={'link'} colorScheme="blue" >Sign Up</Button></Link></Box>
+            <Box>
+              New User?{" "}
+              <Link to={"/register"}>
+                <Button variant={"link"} colorScheme="blue">
+                  Sign Up
+                </Button>
+              </Link>
+            </Box>
           </form>
         </VStack>
       </Container>

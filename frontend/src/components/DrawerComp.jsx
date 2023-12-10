@@ -14,19 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { CgLogOut, CgProfile } from "react-icons/cg";
-import {RiDashboardFill} from "react-icons/ri"
+import { RiDashboardFill } from "react-icons/ri";
 
-const DrawerComp = ({ refFromParent }) => {
+const DrawerComp = ({ refFromParent, isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isAuthenticated = true;
-  const user = {
-    role: "admin"
-  }
-
-  const logoutHandler = ()=>{
-    onClose()
-  }
+  const logoutHandler = () => {
+    onClose();
+  };
 
   return (
     <>
@@ -73,33 +68,34 @@ const DrawerComp = ({ refFromParent }) => {
             </VStack>
           </DrawerBody>
 
-          <DrawerFooter
-            display={"flex"}
-            justifyContent={"space-evenly"}
-          >
+          <DrawerFooter display={"flex"} justifyContent={"space-evenly"}>
             {isAuthenticated ? (
               <>
                 <VStack>
                   <HStack>
-                    <Button variant={"outline"} colorScheme="white" onClick={logoutHandler}>
+                    <Button
+                      variant={"outline"}
+                      colorScheme="white"
+                      onClick={logoutHandler}
+                    >
                       Logout
-                      <CgLogOut style={{marginLeft: "5px"}}  />
+                      <CgLogOut style={{ marginLeft: "5px" }} />
                     </Button>
                     <Link to={"/profile"} onClick={onClose}>
-                      <Button colorScheme="blue">Profile
-                      <CgProfile style={{marginLeft: "5px"}} />
+                      <Button colorScheme="blue">
+                        Profile
+                        <CgProfile style={{ marginLeft: "5px" }} />
                       </Button>
                     </Link>
                   </HStack>
-                  {
-                    user && user.role === "admin" &&  <Link to={"/admin/dashboard"} onClick={onClose}>
-                    <Button>
-                      Dashboard
-                      <RiDashboardFill style={{marginLeft: "5px"}}  />
+                  {user && user.role === "admin" && (
+                    <Link to={"/admin/dashboard"} onClick={onClose}>
+                      <Button>
+                        Dashboard
+                        <RiDashboardFill style={{ marginLeft: "5px" }} />
                       </Button>
-                      
-                  </Link>
-                  }
+                    </Link>
+                  )}
                 </VStack>
               </>
             ) : (
