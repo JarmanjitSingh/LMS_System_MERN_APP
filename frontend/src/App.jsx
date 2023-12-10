@@ -76,7 +76,7 @@ function App() {
                 path="/updateprofile"
                 element={
                   <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <UpdateProfile />
+                    <UpdateProfile user={user} />
                   </ProtectedRoute>
                 }
               />
@@ -174,9 +174,9 @@ function App() {
               />
             </Routes>
             <Footer />
-            <Toaster />
           </>
         )}
+        <Toaster />
       </Router>
     </main>
   );

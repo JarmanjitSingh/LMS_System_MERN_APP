@@ -23,26 +23,47 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { PiBookOpenTextLight, PiLockKeyBold } from "react-icons/pi";
 import { TbLogout2 } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import CourseCardComp from "../../components/CourseCardComp";
 import toast from "react-hot-toast";
+import { updateProfilePicture } from "../../reduxToolkit/api_functions/profile";
+import { useDispatch, useSelector } from "react-redux";
+import { clearError } from "../../reduxToolkit/slices/profileSlice";
+import { clearMessage } from "../../reduxToolkit/slices/profileSlice";
+import { getMyProfile } from "../../reduxToolkit/api_functions/user";
 
-const Profile = ({user}) => {
+const Profile = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const removeFromPlayList = () => {};
 
+
+  const {loading, message, error } = useSelector(
+    (state) => state.profile
+  );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+    if (message) {
+      toast.success(message);
+      dispatch(clearMessage());
+    }
+  }, [dispatch, message, error]);
   return (
     <>
       <Container maxW={"6xl"} border={"1px solid"} minH={"80vh"} p={4}>
         <Stack
-          direction={["column","column","row", "row"]}
+          direction={["column", "column", "row", "row"]}
           alignItems={"center"}
           justifyContent={"center"}
           w={"full"}
@@ -89,7 +110,6 @@ const Profile = ({user}) => {
               w={"full"}
               p={4}
               onClick={() => navigate("/changepassword")}
-
             >
               <PiLockKeyBold size={20} /> <Text>Change Password</Text>
             </Button>
@@ -127,7 +147,12 @@ const Profile = ({user}) => {
               </Button>
             </VStack>
 
-            <Grid templateColumns={["1fr", "1fr 1fr"]} w={"full"} gap={8} mt={4}>
+            <Grid
+              templateColumns={["1fr", "1fr 1fr"]}
+              w={"full"}
+              gap={8}
+              mt={4}
+            >
               <HStack>
                 <Text fontWeight={"bold"} color={"gray.400"}>
                   Name :{" "}
@@ -155,7 +180,11 @@ const Profile = ({user}) => {
             </Grid>
 
             {user.role !== "admin" && (
-              <HStack w={"full"} alignItems={"center"} justifyContent={["start", "end"]}>
+              <HStack
+                w={"full"}
+                alignItems={"center"}
+                justifyContent={["start", "end"]}
+              >
                 <Text fontWeight={"bold"}>Subscription</Text>
                 {user.subscription && user.subscription.status === "active" ? (
                   <Button>Cancel Subscription</Button>
@@ -199,13 +228,19 @@ const Profile = ({user}) => {
         )}
       </Container>
 
-      <ChangeProfileModal isOpen={isOpen} onClose={onClose} />
+      <ChangeProfileModal
+        isOpen={isOpen}
+        onClose={onClose}
+        dispatch={dispatch}
+        loading={loading}
+        user={user}
+      />
     </>
   );
 };
 
-const ChangeProfileModal = ({ isOpen, onClose }) => {
-  const [imagePreview, setImagePreview] = useState("");
+const ChangeProfileModal = ({ isOpen, onClose, dispatch, loading, user }) => {
+  const [imagePreview, setImagePreview] = useState(user.avatar.url);
   const [image, setImage] = useState("");
 
   const fileInputRef = useRef(null);
@@ -226,7 +261,7 @@ const ChangeProfileModal = ({ isOpen, onClose }) => {
 
   const closeHandler = () => {
     onClose();
-    setImagePreview("");
+    setImagePreview(user.avatar.url);
     setImage("");
   };
 
@@ -237,10 +272,14 @@ const ChangeProfileModal = ({ isOpen, onClose }) => {
     />
   );
 
-  const submitProfile = (e) => {
+  const submitProfile = async(e) => {
     e.preventDefault();
-    toast.success("Profile updated");
-    console.log(e);
+    const formData = new FormData();
+
+    formData.append("file", image);
+    await updateProfilePicture(formData, dispatch);
+    dispatch(getMyProfile(dispatch))
+    onClose();
   };
 
   return (
@@ -269,7 +308,7 @@ const ChangeProfileModal = ({ isOpen, onClose }) => {
                   accept="image/*"
                   type="file"
                   id="avatar"
-                  required
+                  
                 />
               </FormControl>
 
@@ -290,7 +329,7 @@ const ChangeProfileModal = ({ isOpen, onClose }) => {
                 </Button>
               </VStack>
 
-              <Button type="submit" ref={submitButtonRef} display={"none"}>
+              <Button  type="submit" ref={submitButtonRef} display={"none"}>
                 submit
               </Button>
             </form>
@@ -300,10 +339,11 @@ const ChangeProfileModal = ({ isOpen, onClose }) => {
             <Button
               onClick={() => {
                 submitButtonRef.current.click();
-                onClose();
+                
               }}
               colorScheme="blue"
               mr={3}
+              isLoading={loading}
             >
               Submit
             </Button>

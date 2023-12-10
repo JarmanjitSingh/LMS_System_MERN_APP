@@ -1,25 +1,54 @@
 import {
-  Box,
   Button,
   Container,
   FormControl,
   FormLabel,
   Heading,
   Input,
-  Stack,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { changePassword } from "../../reduxToolkit/api_functions/profile";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import {
+  clearError,
+  clearMessage,
+} from "../../reduxToolkit/slices/profileSlice";
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
+  const dispatch = useDispatch();
+
+  const submitHandler = async(e) => {
+    e.preventDefault();
+    await changePassword(oldPassword, newPassword, dispatch);
+    setOldPassword("")
+    setNewPassword("")
+  };
+
+  const {loading, message, error } = useSelector(
+    (state) => state.profile
+  );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+    if (message) {
+      toast.success(message);
+      dispatch(clearMessage());
+    }
+  }, [dispatch, message, error]);
+
   return (
     <>
       <Container h={"95vh"}>
         <VStack h={"full"} justifyContent={"start"} w={"full"} spacing={16}>
-          <form style={{ width: "100%" }}>
+          <form onSubmit={submitHandler} style={{ width: "100%" }}>
             <Heading my={8} textTransform={"uppercase"} textAlign={"center"}>
               Change Password
             </Heading>
@@ -45,7 +74,7 @@ const ChangePassword = () => {
               />
             </FormControl>
 
-            <Button colorScheme="blue" type="submit" w={"full"} my={4}>
+            <Button isLoading={loading} colorScheme="blue" type="submit" w={"full"} my={4}>
               Change Password
             </Button>
           </form>
