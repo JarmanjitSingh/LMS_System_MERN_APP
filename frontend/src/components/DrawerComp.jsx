@@ -15,11 +15,16 @@ import {
 import { Link } from "react-router-dom";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { RiDashboardFill } from "react-icons/ri";
+import { logout } from "../reduxToolkit/api_functions/user";
+import { useDispatch } from "react-redux";
 
 const DrawerComp = ({ refFromParent, isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  const dispatch = useDispatch()
 
   const logoutHandler = () => {
+    logout(dispatch)
     onClose();
   };
 

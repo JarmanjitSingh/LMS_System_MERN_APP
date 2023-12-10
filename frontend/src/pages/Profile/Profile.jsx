@@ -31,30 +31,10 @@ import { Link, useNavigate } from "react-router-dom";
 import CourseCardComp from "../../components/CourseCardComp";
 import toast from "react-hot-toast";
 
-const Profile = () => {
+const Profile = ({user}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
-
-  const user = {
-    name: "Jarmanjit Singh",
-    email: "jarmanjit@gmail.com",
-    createdAt: String(new Date().toISOString()),
-    role: "user",
-    subscription: {
-      status: "active",
-    },
-    playlist: [
-      {
-        course: "web developement",
-        poster: "poster",
-      },
-      {
-        course: "AI",
-        poster: "poster",
-      },
-    ],
-  };
 
   const removeFromPlayList = () => {};
 
@@ -141,7 +121,7 @@ const Profile = () => {
 
           <VStack w={["100%", "100%", "60%", "60%"]} minH={"70vh"}>
             <VStack>
-              <Avatar size={"2xl"} />
+              <Avatar size={"2xl"} src={user.avatar.url} />
               <Button variant={"link"} colorScheme="blue" onClick={onOpen}>
                 Change Photo
               </Button>
@@ -152,7 +132,7 @@ const Profile = () => {
                 <Text fontWeight={"bold"} color={"gray.400"}>
                   Name :{" "}
                 </Text>
-                <Text numberOfLines={1} color={"gray.400"}>
+                <Text noOfLines={1} color={"gray.400"}>
                   {user.name}
                 </Text>
               </HStack>
@@ -160,7 +140,7 @@ const Profile = () => {
                 <Text fontWeight={"bold"} color={"gray.400"}>
                   Email :{" "}
                 </Text>
-                <Text numberOfLines={1} color={"gray.400"}>
+                <Text noOfLines={1} color={"gray.400"}>
                   {user.email}
                 </Text>
               </HStack>
@@ -168,7 +148,7 @@ const Profile = () => {
                 <Text fontWeight={"bold"} color={"gray.400"}>
                   Created At :{" "}
                 </Text>
-                <Text numberOfLines={1} color={"gray.400"}>
+                <Text noOfLines={1} color={"gray.400"}>
                   {user.createdAt.split("T")[0]}
                 </Text>
               </HStack>
@@ -177,7 +157,7 @@ const Profile = () => {
             {user.role !== "admin" && (
               <HStack w={"full"} alignItems={"center"} justifyContent={["start", "end"]}>
                 <Text fontWeight={"bold"}>Subscription</Text>
-                {user.subscription.status === "active" ? (
+                {user.subscription && user.subscription.status === "active" ? (
                   <Button>Cancel Subscription</Button>
                 ) : (
                   <Link to={"/subscribe"}>

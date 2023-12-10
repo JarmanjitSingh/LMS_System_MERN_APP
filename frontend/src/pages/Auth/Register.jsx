@@ -14,6 +14,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { register } from "../../reduxToolkit/api_functions/user";
+import { useDispatch } from "react-redux";
 
 const fileUploadStyle = {
     "&::file-selector-button": {
@@ -34,6 +36,7 @@ const Register = () => {
   const [image, setImage] = useState('')
 
   const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const changeImageHandler = (e)=>{
     const file = e.target.files[0];
@@ -45,6 +48,19 @@ const Register = () => {
         setImagePreview(reader.result)
         setImage(file)
     }
+  }
+
+  const submitHandler = (e)=>{
+    e.preventDefault();
+
+    const myForm = new FormData();
+
+    myForm.append("name", name);
+    myForm.append("email", email);
+    myForm.append("password", password);
+    myForm.append("file", image);
+
+    register(myForm, dispatch)
   }
 
   return (
@@ -63,7 +79,7 @@ const Register = () => {
             />
           </Stack>
 
-          <form style={{ width: "100%" }}>
+          <form onSubmit={submitHandler} style={{ width: "100%" }}>
             <FormControl my={4}>
               <FormLabel htmlFor="name">Name</FormLabel>
               <Input
@@ -102,7 +118,7 @@ const Register = () => {
 
             <FormControl my={4} display={'none'} >
               <FormLabel htmlFor="avatar">Choose Avatar</FormLabel>
-              <Input ref={fileInputRef} onChange={changeImageHandler} accept="image/*" type="file" id="avatar" required css={fileUploadStyle} />
+              <Input ref={fileInputRef} onChange={changeImageHandler} accept="image/*" type="file" id="avatar"  css={fileUploadStyle} />
             </FormControl>
 
             <HStack textAlign={'right'} alignItems={'center'} justifyContent={'end'}>
