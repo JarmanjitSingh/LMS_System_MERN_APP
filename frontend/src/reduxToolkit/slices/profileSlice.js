@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {
+};
 
 export const profileSlice = createSlice({
   name: "profile",
@@ -26,6 +27,30 @@ export const profileSlice = createSlice({
       state.message = action.payload;
     },
     changePasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    forgetPasswordRequest: (state) => {
+      state.loading = true;
+    },
+    forgetPasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    forgetPasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    resetPasswordRequest: (state) => {
+      state.loading = true;
+    },
+    resetPasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    resetPasswordFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -64,6 +89,12 @@ export const {
   updateProfilePictureFail,
   clearError,
   clearMessage,
+  forgetPasswordRequest,
+  forgetPasswordSuccess,
+  forgetPasswordFail,
+  resetPasswordRequest,
+  resetPasswordSuccess,
+  resetPasswordFail,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;
