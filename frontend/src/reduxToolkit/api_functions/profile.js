@@ -1,4 +1,5 @@
 import axios from "axios";
+import { server } from "../../main";
 import {
   changePasswordFail,
   changePasswordRequest,
@@ -16,7 +17,6 @@ import {
   updateProfileRequest,
   updateProfileSuccess,
 } from "../slices/profileSlice";
-import { server } from "../../main";
 
 export const updateProfile = async (name, email, dispatch) => {
   try {

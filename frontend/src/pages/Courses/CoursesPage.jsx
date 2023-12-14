@@ -8,13 +8,20 @@ import {
   InputLeftElement,
   Stack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseCardComp from "../../components/CourseCardComp";
 import { BsSearch } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCourses } from "../../reduxToolkit/api_functions/course";
+import toast from "react-hot-toast";
+import { clearError } from "../../reduxToolkit/slices/courseSlice";
 
 const CoursesPage = () => {
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
+  const [activeTab, setActiveTab] = useState(0);
+  const dispatch = useDispatch();
+  const { loading, error, courses } = useSelector((state) => state.course);
 
   const addToPlayList = () => {};
 
@@ -25,8 +32,17 @@ const CoursesPage = () => {
     "Artificial inteligence",
     "Machine learning",
   ];
+
+  useEffect(() => {
+    getAllCourses(category, keyword, dispatch);
+    if (error) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+  }, [category, keyword, dispatch, error]);
+
   return (
-    <Container minH={"95vh"} maxW={"container.lg"} >
+    <Container minH={"95vh"} maxW={"container.lg"}>
       <Heading textAlign={"center"} size={"2xl"} letterSpacing={"1px"} m={8}>
         All Courses
       </Heading>
@@ -36,13 +52,11 @@ const CoursesPage = () => {
           <BsSearch color="gray.300" />
         </InputLeftElement>
         <Input
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Search a course ..."
-      />
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="Search a course ..."
+        />
       </InputGroup>
-
-     
 
       <Heading mt={4} size={"md"}>
         Select Category
@@ -55,8 +69,16 @@ const CoursesPage = () => {
         mt={4}
         flexWrap={"wrap"}
       >
-        {categories.map((item) => (
-          <Button variant={"link"} onClick={() => setCategory(item)} key={item}>
+        {categories.map((item, index) => (
+          <Button
+            variant={"link"}
+            onClick={() => {
+              setCategory(item);
+              setActiveTab(index);
+            }}
+            color={activeTab === index ? 'blue.500' : ''}
+            key={item}
+          >
             {item}
           </Button>
         ))}
@@ -69,18 +91,23 @@ const CoursesPage = () => {
         alignItems={["center", "flex-start"]}
         py={8}
       >
-        <CourseCardComp
-          views={4}
-          title={"javascript"}
-          imageSrc={"hh"}
-          id={123}
-          addToPlaylistHandler={addToPlayList}
-          creator={"jarmanjit singh"}
-          description={
-            "this is mern stack project what is the capacity to do work and the eligibility criteria is the most important thing in the world"
-          }
-          lectures={4}
-        />
+        {courses && courses.length > 0 ? (
+          courses.map((course) => (
+            <CourseCardComp
+              views={course.views}
+              title={course.title}
+              imageSrc={course.poster.url}
+              id={course._id}
+              addToPlaylistHandler={addToPlayList}
+              creator={course.createdBy}
+              description={course.description}
+              lectures={course.numOfVideos}
+              key={course._id}
+            />
+          ))
+        ) : (
+          <Heading>Courses not found</Heading>
+        )}
       </Stack>
     </Container>
   );

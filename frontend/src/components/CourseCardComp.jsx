@@ -37,7 +37,7 @@ const CourseCardComp = ({
       
     >
       <Image
-        src={`https://cdn.pixabay.com/photo/2023/08/11/06/12/boy-8182923_1280.jpg`}
+        src={imageSrc}
         h={"200px"}
         w={"full"}
         objectFit={"cover"}
