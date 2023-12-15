@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-};
+const initialState = {};
 
 export const profileSlice = createSlice({
   name: "profile",
@@ -67,6 +66,18 @@ export const profileSlice = createSlice({
       state.error = action.payload;
     },
 
+    removeFromPlaylistRequest: (state) => {
+      state.loading = true;
+    },
+    removeFromPlaylistSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    removeFromPlaylistFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     clearError: (state) => {
       state.error = null;
     },
@@ -95,6 +106,9 @@ export const {
   resetPasswordRequest,
   resetPasswordSuccess,
   resetPasswordFail,
+  removeFromPlaylistRequest,
+  removeFromPlaylistSuccess,
+  removeFromPlaylistFail,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

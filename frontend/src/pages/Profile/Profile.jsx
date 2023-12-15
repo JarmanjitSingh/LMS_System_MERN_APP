@@ -1,11 +1,8 @@
 import {
   Avatar,
-  Box,
   Button,
-  ButtonGroup,
   Container,
   FormControl,
-  FormLabel,
   Grid,
   HStack,
   Heading,
@@ -28,13 +25,17 @@ import { CgProfile } from "react-icons/cg";
 import { PiBookOpenTextLight, PiLockKeyBold } from "react-icons/pi";
 import { TbLogout2 } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
-import CourseCardComp from "../../components/CourseCardComp";
 import toast from "react-hot-toast";
-import { updateProfilePicture } from "../../reduxToolkit/api_functions/profile";
+import {
+  removeFromPlaylist,
+  updateProfilePicture,
+} from "../../reduxToolkit/api_functions/profile";
 import { useDispatch, useSelector } from "react-redux";
 import { clearError } from "../../reduxToolkit/slices/profileSlice";
 import { clearMessage } from "../../reduxToolkit/slices/profileSlice";
 import { getMyProfile } from "../../reduxToolkit/api_functions/user";
+import { BsCollectionPlayFill } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
 
 const Profile = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,12 +43,12 @@ const Profile = ({ user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const removeFromPlayList = () => {};
+  const removeFromPlayList = async (id) => {
+    await removeFromPlaylist(id, dispatch);
+    getMyProfile(dispatch);
+  };
 
-
-  const {loading, message, error } = useSelector(
-    (state) => state.profile
-  );
+  const { loading, message, error } = useSelector((state) => state.profile);
 
   useEffect(() => {
     if (error) {
@@ -208,21 +209,15 @@ const Profile = ({ user }) => {
             flexWrap={"wrap"}
             p={4}
           >
-            {user.playlist.map((element) => (
-              <VStack m={2} key={element.course}>
-                <CourseCardComp
-                  views={4}
-                  title={"javascript"}
-                  imageSrc={"hh"}
-                  id={element.course}
-                  addToPlaylistHandler={removeFromPlayList}
-                  creator={"jarmanjit singh"}
-                  description={
-                    "this is mern stack project what is the capacity to do work and the eligibility criteria is the most important thing in the world"
-                  }
-                  lectures={4}
-                />
-              </VStack>
+            {user.playlist.map((item) => (
+              // <VStack m={2} key={element.course}>
+              <PlaylistCardComp
+                imageSrc={item.poster}
+                id={item.course}
+                removeFromPlaylistHandler={removeFromPlayList}
+                loading={loading}
+              />
+              // </VStack>
             ))}
           </Stack>
         )}
@@ -272,13 +267,13 @@ const ChangeProfileModal = ({ isOpen, onClose, dispatch, loading, user }) => {
     />
   );
 
-  const submitProfile = async(e) => {
+  const submitProfile = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
     formData.append("file", image);
     await updateProfilePicture(formData, dispatch);
-    dispatch(getMyProfile(dispatch))
+    dispatch(getMyProfile(dispatch));
     onClose();
   };
 
@@ -308,7 +303,6 @@ const ChangeProfileModal = ({ isOpen, onClose, dispatch, loading, user }) => {
                   accept="image/*"
                   type="file"
                   id="avatar"
-                  
                 />
               </FormControl>
 
@@ -329,7 +323,7 @@ const ChangeProfileModal = ({ isOpen, onClose, dispatch, loading, user }) => {
                 </Button>
               </VStack>
 
-              <Button  type="submit" ref={submitButtonRef} display={"none"}>
+              <Button type="submit" ref={submitButtonRef} display={"none"}>
                 submit
               </Button>
             </form>
@@ -339,7 +333,6 @@ const ChangeProfileModal = ({ isOpen, onClose, dispatch, loading, user }) => {
             <Button
               onClick={() => {
                 submitButtonRef.current.click();
-                
               }}
               colorScheme="blue"
               mr={3}
@@ -352,6 +345,49 @@ const ChangeProfileModal = ({ isOpen, onClose, dispatch, loading, user }) => {
         </ModalContent>
       </Modal>
     </>
+  );
+};
+
+const PlaylistCardComp = ({
+  imageSrc,
+  id,
+  loading,
+  removeFromPlaylistHandler,
+}) => {
+  return (
+    <VStack
+      className="course"
+      alignItems={"space-between"}
+      maxW={"350px"}
+      p={4}
+      borderRadius={"10px"}
+      bg={"blue.900"}
+      shadow={"dark-lg"}
+      gap={4}
+    >
+      <Image src={imageSrc} h={"200px"} w={"full"} objectFit={"cover"} />
+
+      <Stack
+        direction={["column", "row"]}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+      >
+        <Link to={`/course/${id}`}>
+          <Button colorScheme="blue">
+            Watch Now <BsCollectionPlayFill style={{ marginLeft: "10px" }} />
+          </Button>
+        </Link>
+        <Button
+          isLoading={loading}
+          variant={"outline"}
+          colorScheme="blue"
+          onClick={() => removeFromPlaylistHandler(id)}
+        >
+          Remove
+          <MdDelete size={22} style={{ marginLeft: "10px" }} />
+        </Button>
+      </Stack>
+    </VStack>
   );
 };
 

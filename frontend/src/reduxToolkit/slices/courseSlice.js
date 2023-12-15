@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-};
+const initialState = {};
 
 export const courseSlice = createSlice({
   name: "course",
@@ -18,9 +17,23 @@ export const courseSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    clearError: (state)=>{
-        state.error = null
-    }
+    addToPlaylistRequest: (state) => {
+      state.loading = true;
+    },
+    addToPlaylistSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    addToPlaylistFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
+    clearMessage: (state) => {
+      state.message = null;
+    },
   },
 });
 
@@ -29,7 +42,11 @@ export const {
   allCoursesRequest,
   allCoursesSuccess,
   allCoursesFail,
-  clearError
+  addToPlaylistRequest,
+  addToPlaylistSuccess,
+  addToPlaylistFail,
+  clearError,
+  clearMessage
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

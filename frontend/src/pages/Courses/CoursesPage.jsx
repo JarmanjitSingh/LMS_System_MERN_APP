@@ -14,16 +14,21 @@ import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCourses } from "../../reduxToolkit/api_functions/course";
 import toast from "react-hot-toast";
-import { clearError } from "../../reduxToolkit/slices/courseSlice";
+import { clearError, clearMessage } from "../../reduxToolkit/slices/courseSlice";
+import { addToPlaylist } from "../../reduxToolkit/api_functions/profile";
+import { getMyProfile } from "../../reduxToolkit/api_functions/user";
 
 const CoursesPage = () => {
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const dispatch = useDispatch();
-  const { loading, error, courses } = useSelector((state) => state.course);
+  const { loading, error, courses, message } = useSelector((state) => state.course);
 
-  const addToPlayList = () => {};
+  const addToPlayListHandler = async(id) => {
+   await addToPlaylist(id, dispatch);
+   getMyProfile(dispatch)
+  };
 
   const categories = [
     "Web development",
@@ -35,11 +40,15 @@ const CoursesPage = () => {
 
   useEffect(() => {
     getAllCourses(category, keyword, dispatch);
+    if(message){
+      toast.success(message);
+      dispatch(clearMessage())
+    }
     if (error) {
       toast.error(error);
       dispatch(clearError());
     }
-  }, [category, keyword, dispatch, error]);
+  }, [category, keyword, dispatch, error, message]);
 
   return (
     <Container minH={"95vh"} maxW={"container.lg"}>
@@ -98,11 +107,12 @@ const CoursesPage = () => {
               title={course.title}
               imageSrc={course.poster.url}
               id={course._id}
-              addToPlaylistHandler={addToPlayList}
+              addToPlaylistHandler={addToPlayListHandler}
               creator={course.createdBy}
               description={course.description}
               lectures={course.numOfVideos}
               key={course._id}
+              loading={loading}
             />
           ))
         ) : (

@@ -76,3 +76,5 @@ export const register = async (formData, dispatch) => {
     dispatch(registerFail(error.response.data.message));
   }
 };
+
+

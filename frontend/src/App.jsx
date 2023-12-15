@@ -193,9 +193,10 @@ function App() {
                 }
               />
             </Routes>
-            <Footer />
+          
           </>
         )}
+          <Footer />
         <Toaster />
       </Router>
     </main>

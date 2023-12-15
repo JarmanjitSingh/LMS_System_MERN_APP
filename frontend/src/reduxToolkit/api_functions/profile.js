@@ -7,6 +7,9 @@ import {
   forgetPasswordFail,
   forgetPasswordRequest,
   forgetPasswordSuccess,
+  removeFromPlaylistFail,
+  removeFromPlaylistRequest,
+  removeFromPlaylistSuccess,
   resetPasswordFail,
   resetPasswordRequest,
   resetPasswordSuccess,
@@ -17,6 +20,7 @@ import {
   updateProfileRequest,
   updateProfileSuccess,
 } from "../slices/profileSlice";
+import { addToPlaylistFail, addToPlaylistRequest, addToPlaylistSuccess } from "../slices/courseSlice";
 
 export const updateProfile = async (name, email, dispatch) => {
   try {
@@ -134,5 +138,46 @@ export const resetPassword = async (token, password, dispatch) => {
   } catch (error) {
     console.log(error.response.data.message)
     dispatch(resetPasswordFail(error.response.data.message));
+  }
+};
+
+
+
+
+export const addToPlaylist = async (id, dispatch) => {
+  try {
+    dispatch(addToPlaylistRequest());
+
+    const { data } = await axios.post(
+      `${server}/addtoplaylist`, {
+        id
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      });
+
+    dispatch(addToPlaylistSuccess(data.message));
+  } catch (error) {
+    dispatch(addToPlaylistFail(error.response.data.message));
+  }
+};
+
+export const removeFromPlaylist = async (id, dispatch) => {
+  try {
+    dispatch(removeFromPlaylistRequest());
+
+    const { data } = await axios.delete(
+      `${server}/removefromplaylist?id=${id}`, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      });
+
+    dispatch(removeFromPlaylistSuccess(data.message));
+  } catch (error) {
+    dispatch(removeFromPlaylistFail(error.response.data.message));
   }
 };
