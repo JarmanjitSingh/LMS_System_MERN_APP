@@ -31,14 +31,17 @@ import {
   updateProfilePicture,
 } from "../../reduxToolkit/api_functions/profile";
 import { useDispatch, useSelector } from "react-redux";
-import { clearError } from "../../reduxToolkit/slices/profileSlice";
-import { clearMessage } from "../../reduxToolkit/slices/profileSlice";
+import { clearError, clearMessage } from "../../reduxToolkit/slices/profileSlice";
+import { clearError as subsClearError, clearMessage as subsClearMessage } from "../../reduxToolkit/slices/subscriptionSlice";
 import { getMyProfile } from "../../reduxToolkit/api_functions/user";
 import { BsCollectionPlayFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
+import { cancelSubscription } from "../../reduxToolkit/api_functions/subscription";
 
 const Profile = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { loading, message, error } = useSelector((state) => state.profile);
+  const { loading: subscriptionLoading, message: subscriptionMessage, error: subscriptionError } = useSelector((state) => state.subscription);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,7 +51,11 @@ const Profile = ({ user }) => {
     getMyProfile(dispatch);
   };
 
-  const { loading, message, error } = useSelector((state) => state.profile);
+  const handleCancelSubscription = async()=>{
+   await cancelSubscription(dispatch)
+   getMyProfile(dispatch)
+  }
+  
 
   useEffect(() => {
     if (error) {
@@ -59,7 +66,16 @@ const Profile = ({ user }) => {
       toast.success(message);
       dispatch(clearMessage());
     }
-  }, [dispatch, message, error]);
+
+    if (subscriptionError) {
+      toast.error(subscriptionError);
+      dispatch(subsClearError());
+    }
+    if (subscriptionMessage) {
+      toast.success(subscriptionMessage);
+      dispatch(subsClearMessage());
+    }
+  }, [dispatch, message, error, subscriptionError, subscriptionMessage]);
   return (
     <>
       <Container maxW={"6xl"} border={"1px solid"} minH={"80vh"} p={4}>
@@ -188,7 +204,7 @@ const Profile = ({ user }) => {
               >
                 <Text fontWeight={"bold"}>Subscription</Text>
                 {user.subscription && user.subscription.status === "active" ? (
-                  <Button>Cancel Subscription</Button>
+                  <Button isLoading={subscriptionLoading} onClick={handleCancelSubscription}>Cancel Subscription</Button>
                 ) : (
                   <Link to={"/subscribe"}>
                     <Button colorScheme="blue">Subscribe</Button>
