@@ -52,7 +52,14 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/courses" element={<CoursesPage />} />
-              <Route path="/course/:id" element={<CourseDetailPage />} />
+              <Route
+                path="/course/:id"
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}> 
+                    <CourseDetailPage user={user} />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/contact" element={<Contact />} />
               <Route path="/request" element={<RequestCourse />} />
               <Route path="/about" element={<About />} />
@@ -193,10 +200,9 @@ function App() {
                 }
               />
             </Routes>
-          
           </>
         )}
-          <Footer />
+        <Footer />
         <Toaster />
       </Router>
     </main>

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {courses: [], lectures: []};
 
 export const courseSlice = createSlice({
   name: "course",
@@ -14,6 +14,17 @@ export const courseSlice = createSlice({
       state.courses = action.payload;
     },
     allCoursesFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    getCourseRequest: (state) => {
+      state.loading = true;
+    },
+    getCourseSuccess: (state, action) => {
+      state.loading = false;
+      state.lectures = action.payload;
+    },
+    getCourseFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -45,6 +56,9 @@ export const {
   addToPlaylistRequest,
   addToPlaylistSuccess,
   addToPlaylistFail,
+  getCourseRequest,
+  getCourseSuccess,
+  getCourseFail,
   clearError,
   clearMessage
 } = courseSlice.actions;
