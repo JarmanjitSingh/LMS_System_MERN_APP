@@ -1,6 +1,7 @@
 import {
   Button,
   Container,
+  Grid,
   HStack,
   Heading,
   Input,
@@ -14,7 +15,10 @@ import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCourses } from "../../reduxToolkit/api_functions/course";
 import toast from "react-hot-toast";
-import { clearError, clearMessage } from "../../reduxToolkit/slices/courseSlice";
+import {
+  clearError,
+  clearMessage,
+} from "../../reduxToolkit/slices/courseSlice";
 import { addToPlaylist } from "../../reduxToolkit/api_functions/profile";
 import { getMyProfile } from "../../reduxToolkit/api_functions/user";
 
@@ -23,14 +27,17 @@ const CoursesPage = () => {
   const [category, setCategory] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const dispatch = useDispatch();
-  const { loading, error, courses, message } = useSelector((state) => state.course);
+  const { loading, error, courses, message } = useSelector(
+    (state) => state.course
+  );
 
-  const addToPlayListHandler = async(id) => {
-   await addToPlaylist(id, dispatch);
-   getMyProfile(dispatch)
+  const addToPlayListHandler = async (id) => {
+    await addToPlaylist(id, dispatch);
+    getMyProfile(dispatch);
   };
 
   const categories = [
+    "All",
     "Web development",
     "App development",
     "Data Science",
@@ -40,9 +47,9 @@ const CoursesPage = () => {
 
   useEffect(() => {
     getAllCourses(category, keyword, dispatch);
-    if(message){
+    if (message) {
       toast.success(message);
-      dispatch(clearMessage())
+      dispatch(clearMessage());
     }
     if (error) {
       toast.error(error);
@@ -51,47 +58,49 @@ const CoursesPage = () => {
   }, [category, keyword, dispatch, error, message]);
 
   return (
-    <Container minH={"95vh"} maxW={"container.lg"}>
-      <Heading textAlign={"center"} size={"2xl"} letterSpacing={"1px"} m={8}>
-        All Courses
-      </Heading>
+    <>
+      <Container maxW={"container.lg"}>
+        <Heading textAlign={"center"} size={"2xl"} letterSpacing={"1px"} m={8}>
+          All Courses
+        </Heading>
 
-      <InputGroup>
-        <InputLeftElement pointerEvents="none">
-          <BsSearch color="gray.300" />
-        </InputLeftElement>
-        <Input
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="Search a course ..."
-        />
-      </InputGroup>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <BsSearch color="gray.300" />
+          </InputLeftElement>
+          <Input
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            placeholder="Search a course ..."
+          />
+        </InputGroup>
 
-      <Heading mt={4} size={"md"}>
-        Select Category
-      </Heading>
-      <HStack
-        gap={4}
-        alignItems={"center"}
-        w={"full"}
-        m={"auto"}
-        mt={4}
-        flexWrap={"wrap"}
-      >
-        {categories.map((item, index) => (
-          <Button
-            variant={"link"}
-            onClick={() => {
-              setCategory(item);
-              setActiveTab(index);
-            }}
-            color={activeTab === index ? 'blue.500' : ''}
-            key={item}
-          >
-            {item}
-          </Button>
-        ))}
-      </HStack>
+        <Heading mt={4} size={"md"}>
+          Select Category
+        </Heading>
+        <HStack
+          gap={4}
+          alignItems={"center"}
+          w={"full"}
+          m={"auto"}
+          mt={4}
+          flexWrap={"wrap"}
+        >
+          {categories.map((item, index) => (
+            <Button
+              variant={"link"}
+              onClick={() => {
+                setCategory(item);
+                setActiveTab(index);
+              }}
+              color={activeTab === index ? "blue.500" : ""}
+              key={item}
+            >
+              {item}
+            </Button>
+          ))}
+        </HStack>
+      </Container>
 
       <Stack
         direction={["column", "row"]}
@@ -99,6 +108,8 @@ const CoursesPage = () => {
         justifyContent={["flex-start", "space-evenly"]}
         alignItems={["center", "flex-start"]}
         py={8}
+        maxW={"container.xl"}
+        margin={"auto"}
       >
         {courses && courses.length > 0 ? (
           courses.map((course) => (
@@ -119,7 +130,7 @@ const CoursesPage = () => {
           <Heading>Courses not found</Heading>
         )}
       </Stack>
-    </Container>
+    </>
   );
 };
 

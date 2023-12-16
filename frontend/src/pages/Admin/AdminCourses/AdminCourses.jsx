@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Container,
@@ -21,23 +21,14 @@ import cursor from "../../../assets/images/cursor.png";
 import Sidebar from "../Sidebar";
 import { AiFillDelete } from "react-icons/ai";
 import LecturesModal from "./LecturesModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCourses } from "../../../reduxToolkit/api_functions/course";
 
 const AdminCourses = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const courses = [
-    {
-      _id: "dfladfklnadjn",
-      title: "MERN Stack",
-      category: "Web Development",
-      poster: {
-        url: "https://res.cloudinary.com/practicaldev/image/fetch/s--J2NNFAdg--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://images.unsplash.com/photo-1529675641475-78780f1fd4b0%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1350%26q%3D80",
-      },
-      createdBy: "Mr. Jarmanjit Singh",
-      views: 1023,
-      numOfVideos: 12,
-    },
-  ];
+  const { courses } = useSelector((state) => state.course);
+  const dispatch = useDispatch();
 
   const courseDetailHandler = () => {
     onOpen();
@@ -47,8 +38,13 @@ const AdminCourses = () => {
   const deleteLectureButtonHandler = () => {};
 
   const addLectureHandler = (e, courseId, title, description, video) => {
-    e.preventDefault()
+    e.preventDefault();
   };
+
+  useEffect(() => {
+    getAllCourses("", "",dispatch);
+  }, [dispatch]);
+
   return (
     <Container
       maxW={"container.2xl"}
@@ -59,7 +55,7 @@ const AdminCourses = () => {
       }}
     >
       <Stack
-       direction={["column","column","row", "row"]}
+        direction={["column", "column", "row", "row"]}
         alignItems={"start"}
         justifyContent={"center"}
         w={"full"}
@@ -67,7 +63,7 @@ const AdminCourses = () => {
         gap={16}
       >
         <VStack
-            w={["full","full","20%", "20%"]}
+          w={["full", "full", "20%", "20%"]}
           gap={4}
           bg={"blue.800"}
           borderRadius={"10px"}
@@ -76,8 +72,12 @@ const AdminCourses = () => {
           <Sidebar />
         </VStack>
 
-        <VStack w={["full","full","70%","70%"]} minH={"90vh"} overflowX={"auto"}>
-          <Heading textTransform={"uppercase"}>All Users</Heading>
+        <VStack
+          w={["full", "full", "70%", "70%"]}
+          minH={"90vh"}
+          overflowX={"auto"}
+        >
+          <Heading textTransform={"uppercase"}>All Courses</Heading>
 
           <TableContainer w={["100vw", "full"]}>
             <Table variant={"simple"}>
@@ -102,14 +102,16 @@ const AdminCourses = () => {
               </Thead>
 
               <Tbody>
-                {courses.map((item) => (
-                  <Row
-                    key={item._id}
-                    item={item}
-                    courseDetailHandler={courseDetailHandler}
-                    deleteUserHandler={deleteUserHandler}
-                  />
-                ))}
+                {courses &&
+                  courses.length > 0 &&
+                  courses.map((item) => (
+                    <Row
+                      key={item._id}
+                      item={item}
+                      courseDetailHandler={courseDetailHandler}
+                      deleteUserHandler={deleteUserHandler}
+                    />
+                  ))}
               </Tbody>
             </Table>
           </TableContainer>

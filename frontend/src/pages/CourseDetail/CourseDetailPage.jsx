@@ -73,7 +73,7 @@ const CourseDetailPage = ({ user }) => {
           </VStack>
         </>
       ) : (
-        <Heading>No Lectures</Heading>
+        <Heading textAlign={'center'} w={'100vw'}>No Lectures</Heading>
       )}
     </Grid>
   );
