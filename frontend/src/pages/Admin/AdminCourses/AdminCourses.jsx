@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -22,43 +22,69 @@ import Sidebar from "../Sidebar";
 import { AiFillDelete } from "react-icons/ai";
 import LecturesModal from "./LecturesModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCourses, getCourseLectures } from "../../../reduxToolkit/api_functions/course";
+import {
+  getAllCourses,
+  getCourseLectures,
+} from "../../../reduxToolkit/api_functions/course";
 import toast from "react-hot-toast";
-import { clearError, clearMessage } from "../../../reduxToolkit/slices/adminSlice";
-import { deleteCourse } from "../../../reduxToolkit/api_functions/admin";
+import {
+  clearError,
+  clearMessage,
+} from "../../../reduxToolkit/slices/adminSlice";
+import {
+  addLecture,
+  deleteCourse,
+  deleteLecture,
+} from "../../../reduxToolkit/api_functions/admin";
 
 const AdminCourses = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [courseIdForLectureModal, setCourseIdForLectureModal] = useState('');
+  const [courseTitleForLectureModal, setCourseTitleForLectureModal] = useState('');
 
   const { courses, lectures } = useSelector((state) => state.course);
   const { loading, error, message } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
-  const courseDetailHandler = (courseId) => {
-    getCourseLectures(courseId, dispatch)
+  const courseDetailHandler = (courseId, title) => {
+    setCourseIdForLectureModal(courseId);
+    setCourseTitleForLectureModal(title)
+    getCourseLectures(courseId, dispatch);
     onOpen();
   };
   const deleteCourseHandler = (courseId) => {
-    deleteCourse(courseId, dispatch)
+    deleteCourse(courseId, dispatch);
   };
 
-  const deleteLectureButtonHandler = () => {};
-
-  const addLectureHandler = (e, courseId, title, description, video) => {
+  const addLectureHandler = async(e, courseId, title, description, video) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("file", video);
+
+   await addLecture(courseId, formData, dispatch);
+   getCourseLectures(courseId, dispatch);
   };
+
+  const deleteLectureButtonHandler = async(courseId, lectureId) => {
+    await deleteLecture(courseId, lectureId, dispatch)
+    getCourseLectures(courseId, dispatch);
+  };
+
 
   useEffect(() => {
-    getAllCourses("", "",dispatch);
+    getAllCourses("", "", dispatch);
 
-    if(error){
+    if (error) {
       toast.error(error);
-      dispatch(clearError())
+      dispatch(clearError());
     }
 
-    if(message){
+    if (message) {
       toast.success(message);
-      dispatch(clearMessage())
+      dispatch(clearMessage());
     }
   }, [dispatch, error, message]);
 
@@ -121,7 +147,7 @@ const AdminCourses = () => {
               <Tbody>
                 {courses &&
                   courses.length > 0 &&
-                  courses.map((item) => (
+                  courses.map((item, index) => (
                     <Row
                       key={item._id}
                       item={item}
@@ -136,9 +162,9 @@ const AdminCourses = () => {
           <LecturesModal
             isOpen={isOpen}
             onClose={onClose}
-            id={"fadkfkaslkfj"}
+            id={courseIdForLectureModal}
             deleteButtonHandler={deleteLectureButtonHandler}
-            courseTitle={"React Course"}
+            courseTitle={courseTitleForLectureModal}
             addLectureHandler={addLectureHandler}
             lectures={lectures}
             loading={loading}
@@ -151,7 +177,7 @@ const AdminCourses = () => {
 
 export default AdminCourses;
 
-function Row({ item, courseDetailHandler, deleteCourseHandler, loading }) {
+function Row({ item, courseDetailHandler, deleteCourseHandler, loading, index }) {
   return (
     <>
       <Tr>
@@ -173,11 +199,14 @@ function Row({ item, courseDetailHandler, deleteCourseHandler, loading }) {
               colorScheme="blue"
               color={"white"}
               css={{ ":hover": { color: "blue" } }}
-              onClick={() => courseDetailHandler(item._id)}
+              onClick={() => courseDetailHandler(item._id, item.title)}
             >
               View Lectures
             </Button>
-            <Button isLoading={loading} onClick={() => deleteCourseHandler(item._id)}>
+            <Button
+              isLoading={loading}
+              onClick={() => deleteCourseHandler(item._id)}
+            >
               <AiFillDelete />
             </Button>
           </HStack>

@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
+import Loader from "../../../components/Loader";
 
 const LecturesModal = ({
   isOpen,
@@ -26,8 +27,8 @@ const LecturesModal = ({
   id,
   deleteButtonHandler,
   addLectureHandler,
-  lectures=[],
-  loading
+  lectures = [],
+  loading,
 }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -95,9 +96,9 @@ const LecturesModal = ({
 
               <Box px={["2", "8"]}>
                 <form
-                  onSubmit={() =>
-                    addLectureHandler(e, id, title, description, video)
-                  }
+                  onSubmit={(e) => {
+                    addLectureHandler(e, id, title, description, video);
+                  }}
                   style={{ textAlign: "center" }}
                 >
                   <Heading textTransform={"uppercase"} my={"5"}>
@@ -118,7 +119,7 @@ const LecturesModal = ({
                   <FormControl my={4}>
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Input
-                      type="email"
+                      type="text"
                       id="description"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
@@ -158,7 +159,13 @@ const LecturesModal = ({
                     ></video>
                   )}
 
-                  <Button isLoading={loading} colorScheme="blue" type="submit" w={"full"} my={4}>
+                  <Button
+                    isLoading={loading}
+                    colorScheme="blue"
+                    type="submit"
+                    w={"full"}
+                    my={4}
+                  >
                     Add Lecture
                   </Button>
                 </form>
@@ -191,7 +198,7 @@ function VideoCard({
   lectureId,
   courseId,
   deleteButtonHandler,
-  loading
+  loading,
 }) {
   return (
     <Stack
@@ -213,7 +220,10 @@ function VideoCard({
         <Text>{description}</Text>
       </Box>
 
-      <Button isLoading={loading} onClick={() => deleteButtonHandler(courseId, lectureId)}>
+      <Button
+        isLoading={loading}
+        onClick={() => deleteButtonHandler(courseId, lectureId)}
+      >
         <AiFillDelete />
       </Button>
     </Stack>
