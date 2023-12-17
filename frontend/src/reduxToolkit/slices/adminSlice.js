@@ -17,6 +17,17 @@ export const adminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    deleteCourseRequest: (state) => {
+      state.loading = true;
+    },
+    deleteCourseSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteCourseFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearError: (state) => {
       state.error = null;
     },
@@ -31,6 +42,9 @@ export const {
   createCourseRequest,
   createCourseSuccess,
   createCourseFail,
+  deleteCourseRequest,
+  deleteCourseSuccess,
+  deleteCourseFail,
   clearError,
   clearMessage,
 } = adminSlice.actions;

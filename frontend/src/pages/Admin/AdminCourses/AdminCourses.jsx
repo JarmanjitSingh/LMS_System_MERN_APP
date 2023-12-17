@@ -22,18 +22,25 @@ import Sidebar from "../Sidebar";
 import { AiFillDelete } from "react-icons/ai";
 import LecturesModal from "./LecturesModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCourses } from "../../../reduxToolkit/api_functions/course";
+import { getAllCourses, getCourseLectures } from "../../../reduxToolkit/api_functions/course";
+import toast from "react-hot-toast";
+import { clearError, clearMessage } from "../../../reduxToolkit/slices/adminSlice";
+import { deleteCourse } from "../../../reduxToolkit/api_functions/admin";
 
 const AdminCourses = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { courses } = useSelector((state) => state.course);
+  const { courses, lectures } = useSelector((state) => state.course);
+  const { loading, error, message } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
-  const courseDetailHandler = () => {
+  const courseDetailHandler = (courseId) => {
+    getCourseLectures(courseId, dispatch)
     onOpen();
   };
-  const deleteUserHandler = () => {};
+  const deleteCourseHandler = (courseId) => {
+    deleteCourse(courseId, dispatch)
+  };
 
   const deleteLectureButtonHandler = () => {};
 
@@ -43,7 +50,17 @@ const AdminCourses = () => {
 
   useEffect(() => {
     getAllCourses("", "",dispatch);
-  }, [dispatch]);
+
+    if(error){
+      toast.error(error);
+      dispatch(clearError())
+    }
+
+    if(message){
+      toast.success(message);
+      dispatch(clearMessage())
+    }
+  }, [dispatch, error, message]);
 
   return (
     <Container
@@ -109,7 +126,8 @@ const AdminCourses = () => {
                       key={item._id}
                       item={item}
                       courseDetailHandler={courseDetailHandler}
-                      deleteUserHandler={deleteUserHandler}
+                      deleteCourseHandler={deleteCourseHandler}
+                      loading={loading}
                     />
                   ))}
               </Tbody>
@@ -122,6 +140,8 @@ const AdminCourses = () => {
             deleteButtonHandler={deleteLectureButtonHandler}
             courseTitle={"React Course"}
             addLectureHandler={addLectureHandler}
+            lectures={lectures}
+            loading={loading}
           />
         </VStack>
       </Stack>
@@ -131,7 +151,7 @@ const AdminCourses = () => {
 
 export default AdminCourses;
 
-function Row({ item, courseDetailHandler, deleteUserHandler }) {
+function Row({ item, courseDetailHandler, deleteCourseHandler, loading }) {
   return (
     <>
       <Tr>
@@ -157,7 +177,7 @@ function Row({ item, courseDetailHandler, deleteUserHandler }) {
             >
               View Lectures
             </Button>
-            <Button onClick={() => deleteUserHandler(item._id)}>
+            <Button isLoading={loading} onClick={() => deleteCourseHandler(item._id)}>
               <AiFillDelete />
             </Button>
           </HStack>
