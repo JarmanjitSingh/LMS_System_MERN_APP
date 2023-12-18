@@ -16,6 +16,9 @@ import {
   deleteUserFail,
   deleteUserRequest,
   deleteUserSuccess,
+  getAdminStatsFail,
+  getAdminStatsRequest,
+  getAdminStatsSuccess,
   getAllUsersFail,
   getAllUsersRequest,
   getAllUsersSuccess,
@@ -143,5 +146,22 @@ export const deleteUser = async (id, dispatch) => {
     dispatch(deleteUserSuccess(data.message));
   } catch (error) {
     dispatch(deleteUserFail(error.response.data.message));
+  }
+};
+
+export const getAdminStats = async (dispatch) => {
+  try {
+    dispatch(getAdminStatsRequest());
+
+    const { data } = await axios.get(
+      `${server}/admin/stats`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    dispatch(getAdminStatsSuccess(data));
+  } catch (error) {
+    dispatch(getAdminStatsFail(error.response.data.message));
   }
 };

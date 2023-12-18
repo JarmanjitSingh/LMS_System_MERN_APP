@@ -25,9 +25,7 @@ ChartJS.register(
   Colors
 );
 
-export const LineChart = () => {
-
-
+export const LineChart = ({dataArray = []}) => {
 
     const labels = getLastYearMonths();
      const options = {
@@ -48,7 +46,7 @@ export const LineChart = () => {
         datasets: [
           {
             label: 'Views',
-            data: [1, 2, 3, 4],
+            data: dataArray,
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
           }
@@ -62,13 +60,13 @@ export const LineChart = () => {
 
 
 
-export const DoughnutChart = () => {
+export const DoughnutChart = ({doughnutArray = []}) => {
  const data = {
         labels: ['Subscribed', 'Not Subscribed'],
         datasets: [
           {
             label: 'Number of users',
-            data: [3, 20],
+            data: doughnutArray,
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -111,7 +109,7 @@ for (let i = currentMonth; i < months.length; i--) {
   if(i===0) break; //because otherwise i will in negative value and loop never ends
 }
 
-console.log(labels)
+//console.log(labels)
 
 for (let i = 11; i > remainNummberOfMonths; i--) {
   if(i===currentMonth) break

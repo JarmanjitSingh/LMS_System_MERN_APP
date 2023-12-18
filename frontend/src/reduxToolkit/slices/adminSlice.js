@@ -83,6 +83,27 @@ export const adminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    getAdminStatsRequest: (state) => {
+      state.loading = true;
+    },
+    getAdminStatsSuccess: (state, action) => {
+      state.loading = false;
+      state.stats = action.payload.stats;
+      state.userCount = action.payload.userCount;
+      state.subscriptionCount = action.payload.subscriptionCount;
+      state.viewsCount = action.payload.viewsCount;
+      state.usersPercentage = action.payload.usersPercentage;
+      state.viewsPercentage = action.payload.viewsPercentage;
+      state.subscriptionPercentage = action.payload.subscriptionPercentage;
+      state.usersProfit = action.payload.usersProfit;
+      state.viewsProfit = action.payload.viewsProfit;
+      state.subscriptionProfit = action.payload.subscriptionProfit;
+    },
+    getAdminStatsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearError: (state) => {
       state.error = null;
     },
@@ -115,6 +136,9 @@ export const {
   updateUserRoleFail,
   updateUserRoleRequest,
   updateUserRoleSuccess,
+  getAdminStatsRequest,
+  getAdminStatsSuccess,
+  getAdminStatsFail,
   clearError,
   clearMessage,
 } = adminSlice.actions;
