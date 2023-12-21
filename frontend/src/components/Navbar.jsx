@@ -5,7 +5,7 @@ import DrawerComp from './DrawerComp'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 import { clearError, clearMessage } from '../reduxToolkit/slices/userSlice'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
 
@@ -13,6 +13,38 @@ const Navbar = () => {
   const refToChild = useRef(null);
   const {isAuthenticated, user, message, error} = useSelector(state=> state.user)
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location) 
+
+  if(location.pathname == "/"){
+    document.title = "Code Blu";
+  }else if(location.pathname == "/courses"){
+    document.title = "Code Blu - Courses";
+  }else if(location.pathname == "/request"){
+    document.title = "Code Blu - Request Course";
+  }else if(location.pathname == "/contact"){
+    document.title = "Code Blu - Contact Us";
+  }
+  else if(location.pathname == "/about"){
+    document.title = "Code Blu - About Us";
+  }
+  else if(location.pathname == "/profile"){
+    document.title = "Code Blu - Profile";
+  }
+  else if(location.pathname.includes("admin")){
+    document.title = "Code Blu - Admin";
+  }
+  else if(location.pathname == "/login"){
+    document.title = "Code Blu - Login";
+  }
+  else if(location.pathname == "/register"){
+    document.title = "Code Blu - Register";
+  }
+  else if(location.pathname == "/forgetpassword"){
+    document.title = "Code Blu - Forget Password";
+  }else{
+    document.title = "Code Blu";
+  }
 
   useEffect(()=>{
       if(error){

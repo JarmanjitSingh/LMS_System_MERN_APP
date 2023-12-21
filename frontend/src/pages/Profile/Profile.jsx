@@ -250,7 +250,7 @@ const Profile = ({ user }) => {
             p={4}
           >
             {user.playlist.map((item) => (
-              <GridItem margin={"auto"}>
+              <GridItem margin={"auto"} key={item.course}>
                 <PlaylistCardComp
                   imageSrc={item.poster}
                   id={item.course}
