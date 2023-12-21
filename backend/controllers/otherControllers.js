@@ -11,7 +11,7 @@ export const contact = catchAsyncErrors(async (req, res, next) => {
 
   const to = process.env.MY_MAIL;
   const subject = "Contact from codeBlu";
-  const text = `I am ${name} and my Email is ${email}. \n ${message}`;
+  const text = `I am ${name} and my Email is ${email}. \n message: ${message}`;
 
   await sendEmail(to, subject, text);
 
