@@ -28,20 +28,23 @@ const CourseCardComp = ({
     <VStack
       className="course"
       alignItems={"space-between"}
+      justifyContent={'space-between'}
+      flex={1}
+      flexGrow={1}
       maxW={"350px"}
+      minH={["500px", "480px"]}
       p={4}
-      //   border={"1px solid"}
       borderRadius={"10px"}
       bg={"blue.900"}
       shadow={"dark-lg"}
       gap={4}
     >
-      <Image src={imageSrc} h={"200px"} w={"full"} objectFit={"cover"} />
+      <Image src={imageSrc} h={"200px"} w={"350px"} marginX={'auto'} objectFit={"cover"} />
       <Heading
         textAlign={"left"}
         fontFamily={"sans-serif"}
-        noOfLines={3}
-        size={"md"}
+        noOfLines={1}
+        size={["sm", "md"]}
         textTransform={"uppercase"}
       >
         {title}

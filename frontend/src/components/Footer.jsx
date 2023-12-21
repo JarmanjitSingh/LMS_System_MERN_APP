@@ -25,7 +25,7 @@ const Footer = () => {
             justifyContent={"space-evenly"}
           >
             <Heading>About</Heading>
-            <Link to={"/"}>Our Story</Link>
+            <Link to={"/about"}>Our Story</Link>
             <Link to={"/"}>Privacy Policy</Link>
             <Link to={"/"}>FAQ</Link>
           </VStack>
@@ -36,8 +36,8 @@ const Footer = () => {
             justifyContent={"space-evenly"}
           >
             <Heading>Quick Links</Heading>
-            <Link to={"/"}>Courses</Link>
-            <Link to={"/"}>My Account</Link>
+            <Link to={"/courses"}>Courses</Link>
+            <Link to={"/profile"}>My Account</Link>
             <Link to={"/"}>Course Dashboard</Link>
           </VStack>{" "}
           <VStack
@@ -47,9 +47,9 @@ const Footer = () => {
             justifyContent={"space-evenly"}
           >
             <Heading>Social Links</Heading>
-            <Link to={"/"}>Linkedin</Link>
-            <Link to={"/"}>Github</Link>
-            <Link to={"/"}>Instagram</Link>
+            <Link to={"https://www.linkedin.com/in/jarmanjit-singh-029452256/"} target="_blank">Linkedin</Link>
+            <Link to={"https://github.com/JarmanjitSingh"} target="_blank">Github</Link>
+            <Link to={"https://www.instagram.com/jarmanjit01/"} target="_blank">Instagram</Link>
           </VStack>{" "}
           <VStack
             fontSize={["md", "xl", "xl", "xl"]}
@@ -57,10 +57,10 @@ const Footer = () => {
             alignItems={"center"}
             justifyContent={"space-evenly"}
           >
-            <Heading>About</Heading>
-            <Link to={"/"}>Our Story</Link>
-            <Link to={"/"}>Privacy Policy</Link>
-            <Link to={"/"}>FAQ</Link>
+            <Heading>Resources</Heading>
+            <Link to={"/"}>Blog</Link>
+            <Link to={"/"}>News Letter</Link>
+            <Link to={"/"}>Events</Link>
           </VStack>
         </Grid>
 

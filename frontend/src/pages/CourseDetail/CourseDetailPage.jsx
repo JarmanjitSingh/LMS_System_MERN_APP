@@ -1,10 +1,12 @@
-import { Box, Grid, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import introVideo from "../../assets/videos/intro.mp4";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import { getCourseLectures } from "../../reduxToolkit/api_functions/course";
 import Loader from "../../components/Loader";
+import Lottie from "lottie-react";
+import animationData from "../../assets/docs/Animation - 1703153032547.json"
 
 const CourseDetailPage = ({ user }) => {
   const [lectureNumber, setLectureNumber] = useState(0);
@@ -49,10 +51,12 @@ const CourseDetailPage = ({ user }) => {
               lectures[lectureNumber].title
             }`}</Heading>
             <Heading m={4}>Description</Heading>
-            <Text m={4}>{lectures[lectureNumber].description}</Text>
+            <Text m={4} maxH={"200px"} overflow={"auto"}>
+              {lectures[lectureNumber].description}
+            </Text>
           </Box>
 
-          <VStack p={4}>
+          <VStack p={4} maxH={"90vh"} overflow={"auto"}>
             {lectures.map((item, index) => (
               <button
                 onClick={() => setLectureNumber(index)}
@@ -73,7 +77,17 @@ const CourseDetailPage = ({ user }) => {
           </VStack>
         </>
       ) : (
-        <Heading textAlign={'center'} w={'100vw'}>No Lectures</Heading>
+       <GridItem colSpan={6} minH={"40vh"}  margin={'auto'} w={'full'} >
+          <Heading size={"lg"} color={"grey"} textAlign={"center"} mb={4}>
+            Lectures Not Found
+          </Heading>
+          <Box h={["200px", "300px"]} w={["200px", "300px"]} margin={"auto"}>
+            <Lottie
+              animationData={animationData}
+              style={{ height: "100%", width: "100%" }}
+            />
+          </Box>
+        </GridItem>
       )}
     </Grid>
   );

@@ -29,7 +29,7 @@ color: #00022b;
 
 
 ::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
+  width: 6px; /* Width of the scrollbar */
   height: 4px;
 }
 

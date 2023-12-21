@@ -22,8 +22,8 @@ const DrawerComp = ({ refFromParent, isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
   const dispatch = useDispatch()
-
-  const logoutHandler = () => {
+  
+ const logoutHandler = () => {
     logout(dispatch)
     onClose();
   };

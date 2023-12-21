@@ -1,7 +1,9 @@
 import {
+  Box,
   Button,
   Container,
   Grid,
+  GridItem,
   HStack,
   Heading,
   Input,
@@ -21,6 +23,8 @@ import {
 } from "../../reduxToolkit/slices/courseSlice";
 import { addToPlaylist } from "../../reduxToolkit/api_functions/profile";
 import { getMyProfile } from "../../reduxToolkit/api_functions/user";
+import Lottie from "lottie-react";
+import animationData from "../../assets/docs/Animation - 1703153032547.json"
 
 const CoursesPage = () => {
   const [keyword, setKeyword] = useState("");
@@ -90,7 +94,11 @@ const CoursesPage = () => {
             <Button
               variant={"link"}
               onClick={() => {
-                setCategory(item);
+                if (item == "All") {
+                  setCategory("");
+                } else {
+                  setCategory(item);
+                }
                 setActiveTab(index);
               }}
               color={activeTab === index ? "blue.500" : ""}
@@ -102,17 +110,16 @@ const CoursesPage = () => {
         </HStack>
       </Container>
 
-      <Stack
-        direction={["column", "row"]}
-        flexWrap={"wrap"}
-        justifyContent={["flex-start", "space-evenly"]}
-        alignItems={["center", "flex-start"]}
+      <Grid
+        templateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']}
+        gap={6}
+        margin={'auto'}
         py={8}
         maxW={"container.xl"}
-        margin={"auto"}
       >
         {courses && courses.length > 0 ? (
           courses.map((course) => (
+            <GridItem key={course._id}  margin={'auto'}>
             <CourseCardComp
               views={course.views}
               title={course.title}
@@ -125,11 +132,22 @@ const CoursesPage = () => {
               key={course._id}
               loading={loading}
             />
+            </GridItem>
           ))
         ) : (
-          <Heading>Courses not found</Heading>
+          <GridItem colSpan={6} minH={"80vh"}  margin={'auto'} w={'full'} >
+          <Heading size={"lg"} color={"grey"} textAlign={"center"} mb={4}>
+          Courses not found
+          </Heading>
+          <Box h={["200px", "300px"]} w={["200px", "300px"]} margin={"auto"}>
+            <Lottie
+              animationData={animationData}
+              style={{ height: "100%", width: "100%" }}
+            />
+          </Box>
+        </GridItem>
         )}
-      </Stack>
+      </Grid>
     </>
   );
 };

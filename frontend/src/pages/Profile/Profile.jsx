@@ -1,9 +1,11 @@
 import {
   Avatar,
+  Box,
   Button,
   Container,
   FormControl,
   Grid,
+  GridItem,
   HStack,
   Heading,
   Image,
@@ -31,17 +33,29 @@ import {
   updateProfilePicture,
 } from "../../reduxToolkit/api_functions/profile";
 import { useDispatch, useSelector } from "react-redux";
-import { clearError, clearMessage } from "../../reduxToolkit/slices/profileSlice";
-import { clearError as subsClearError, clearMessage as subsClearMessage } from "../../reduxToolkit/slices/subscriptionSlice";
-import { getMyProfile } from "../../reduxToolkit/api_functions/user";
+import {
+  clearError,
+  clearMessage,
+} from "../../reduxToolkit/slices/profileSlice";
+import {
+  clearError as subsClearError,
+  clearMessage as subsClearMessage,
+} from "../../reduxToolkit/slices/subscriptionSlice";
+import { getMyProfile, logout } from "../../reduxToolkit/api_functions/user";
 import { BsCollectionPlayFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { cancelSubscription } from "../../reduxToolkit/api_functions/subscription";
+import Lottie from "lottie-react";
+import animationData from "../../assets/docs/Animation - 1703153032547.json"
 
 const Profile = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { loading, message, error } = useSelector((state) => state.profile);
-  const { loading: subscriptionLoading, message: subscriptionMessage, error: subscriptionError } = useSelector((state) => state.subscription);
+  const {
+    loading: subscriptionLoading,
+    message: subscriptionMessage,
+    error: subscriptionError,
+  } = useSelector((state) => state.subscription);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,11 +65,14 @@ const Profile = ({ user }) => {
     getMyProfile(dispatch);
   };
 
-  const handleCancelSubscription = async()=>{
-   await cancelSubscription(dispatch)
-   getMyProfile(dispatch)
-  }
-  
+  const handleCancelSubscription = async () => {
+    await cancelSubscription(dispatch);
+    getMyProfile(dispatch);
+  };
+
+  const logoutHandler = () => {
+    logout(dispatch)
+  };
 
   useEffect(() => {
     if (error) {
@@ -78,7 +95,7 @@ const Profile = ({ user }) => {
   }, [dispatch, message, error, subscriptionError, subscriptionMessage]);
   return (
     <>
-      <Container maxW={"6xl"} border={"1px solid"} minH={"80vh"} p={4}>
+      <Container maxW={"6xl"} minH={"80vh"} p={4}>
         <Stack
           direction={["column", "column", "row", "row"]}
           alignItems={"center"}
@@ -139,8 +156,9 @@ const Profile = ({ user }) => {
               justifyContent={"start"}
               w={"full"}
               p={4}
+              onClick={()=> navigate("/courses")}
             >
-              <PiBookOpenTextLight size={20} /> <Text>Enrolled Courses</Text>
+              <PiBookOpenTextLight size={20} /> <Text> Courses</Text>
             </Button>
 
             <Button
@@ -151,6 +169,7 @@ const Profile = ({ user }) => {
               justifyContent={"start"}
               w={"full"}
               p={4}
+              onClick={logoutHandler}
             >
               <TbLogout2 size={20} /> <Text>Sign Out</Text>
             </Button>
@@ -204,7 +223,12 @@ const Profile = ({ user }) => {
               >
                 <Text fontWeight={"bold"}>Subscription</Text>
                 {user.subscription && user.subscription.status === "active" ? (
-                  <Button isLoading={subscriptionLoading} onClick={handleCancelSubscription}>Cancel Subscription</Button>
+                  <Button
+                    isLoading={subscriptionLoading}
+                    onClick={handleCancelSubscription}
+                  >
+                    Cancel Subscription
+                  </Button>
                 ) : (
                   <Link to={"/subscribe"}>
                     <Button colorScheme="blue">Subscribe</Button>
@@ -216,26 +240,35 @@ const Profile = ({ user }) => {
         </Stack>
       </Container>
 
-      <Container maxW={"6xl"} border={"1px solid"} p={4}>
+      <Container maxW={"6xl"} p={4}>
         <Heading letterSpacing={"2px"}>Playlist</Heading>
-        {user.playlist.length > 0 && (
-          <Stack
-            direction={["column", "row"]}
-            alignItems={"center"}
-            flexWrap={"wrap"}
+        {user.playlist.length > 0 ? (
+          <Grid
+            templateColumns={["1fr", "1fr", "1fr 1fr", "1fr 1fr 1fr"]}
+            gap={6}
+            margin={"auto"}
             p={4}
           >
             {user.playlist.map((item) => (
-              // <VStack m={2} key={element.course}>
-              <PlaylistCardComp
-                imageSrc={item.poster}
-                id={item.course}
-                removeFromPlaylistHandler={removeFromPlayList}
-                loading={loading}
-              />
-              // </VStack>
+              <GridItem margin={"auto"}>
+                <PlaylistCardComp
+                  imageSrc={item.poster}
+                  id={item.course}
+                  removeFromPlaylistHandler={removeFromPlayList}
+                  loading={loading}
+                />
+              </GridItem>
             ))}
-          </Stack>
+          </Grid>
+        ) : (
+          <Box minH={"40vh"}>
+            <Heading size={'md'} color={'grey'} textAlign={"center"} mb={4}>
+            Please Add Courses In Playlist
+            </Heading>
+            <Box h={["200px", "300px"]} w={["200px", "300px"]}  margin={'auto'}>
+            <Lottie animationData={animationData}   style={{ height: "100%", width: "100%"}} />
+            </Box>
+          </Box>
         )}
       </Container>
 
@@ -373,15 +406,21 @@ const PlaylistCardComp = ({
   return (
     <VStack
       className="course"
-      alignItems={"space-between"}
       maxW={"350px"}
+      minH={"300px"}
       p={4}
       borderRadius={"10px"}
       bg={"blue.900"}
       shadow={"dark-lg"}
       gap={4}
     >
-      <Image src={imageSrc} h={"200px"} w={"full"} objectFit={"cover"} />
+      <Image
+        src={imageSrc}
+        h={"200px"}
+        w={"300px"}
+        marginX={"auto"}
+        objectFit={"cover"}
+      />
 
       <Stack
         direction={["column", "row"]}

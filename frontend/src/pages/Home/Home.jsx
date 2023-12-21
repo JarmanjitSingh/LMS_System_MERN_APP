@@ -2,8 +2,12 @@ import { Box, Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import animationData from "../../assets/docs/animation_lnko5v1n.json";
 import Lottie from "lottie-react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
   return (
     <>
       <Container
@@ -74,9 +78,13 @@ const Home = () => {
             for everyone.
           </Text>
 
-          <Button colorScheme="blue" width={"50%"} mt={12}>
+   
+          <Button onClick={()=>{
+            navigate("/courses")
+          }} colorScheme="blue" width={"50%"} mt={12}>
             Get Started
           </Button>
+    
         </Box>
       </Container>
     </>
