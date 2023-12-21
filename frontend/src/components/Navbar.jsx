@@ -14,7 +14,6 @@ const Navbar = () => {
   const {isAuthenticated, user, message, error} = useSelector(state=> state.user)
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location) 
 
   if(location.pathname == "/"){
     document.title = "Code Blu";
