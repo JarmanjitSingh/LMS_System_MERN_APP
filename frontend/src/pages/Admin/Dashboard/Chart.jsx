@@ -120,7 +120,7 @@ for (let i = 11; i > remainNummberOfMonths; i--) {
   
 }
 
-console.log(labels)
+//console.log(labels)
 
 return labels
 

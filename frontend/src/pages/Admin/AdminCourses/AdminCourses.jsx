@@ -93,9 +93,9 @@ const AdminCourses = () => {
       maxW={"container.2xl"}
       minH={"100vh"}
       p={4}
-      css={{
-        cursor: `url(${cursor}), default`,
-      }}
+      // css={{
+      //   cursor: `url(${cursor}), default`,
+      // }}
     >
       <Stack
         direction={["column", "column", "row", "row"]}
